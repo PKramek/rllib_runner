@@ -1,20 +1,26 @@
-import ray
-from ray.tune.logger import pretty_print
+from pprint import pprint
 
+import ray
+from ray import tune
+
+from src.args_parser import parser
 from src.util import AlgorithmFactory
 
-ray.init()
-alg = 'PPO'
+if __name__ == "__main__":
+    args = vars(parser.parse_args())
 
-algorithm = AlgorithmFactory.get_algorithm(alg)
-config = algorithm.get_default_config()
-config["num_gpus"] = 0
-config["num_workers"] = 1
-trainer = algorithm.get_trainer(config=config, env="CartPole-v0")
+    algorithm_name = args.pop('algo')
+    max_timesteps = args.pop('max_timesteps')
 
-# Can optionally call trainer.restore(path) to load a checkpoint.
+    algorithm = AlgorithmFactory.get_algorithm(algorithm_name)
+    config = algorithm.get_config_from_args_params(args)
 
-for i in range(1000):
-    # Perform one iteration of training the policy with PPO
-    result = trainer.train()
-    print(pretty_print(result))
+    pprint(config)
+
+    ray.init()
+
+    tune.run(
+        algorithm_name,
+        stop={"timesteps_total": max_timesteps},
+        config=config
+    )

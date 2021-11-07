@@ -57,7 +57,7 @@ class SACStrategy(AlgorithmStrategy):
 class AlgorithmFactory:
     _ALGORITHM_MAPPING = {
         'PPO': PPOStrategy,
-        'SAV': SACStrategy
+        'SAC': SACStrategy
     }
 
     @staticmethod

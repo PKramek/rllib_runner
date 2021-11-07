@@ -22,6 +22,7 @@ class AlgorithmStrategy(ABC):
         return self._rl_lib_algorithm.DEFAULT_CONFIG.copy()
 
     def get_config_from_args_params(self, args_params: Dict) -> Dict:
+        # TODO refactor this method
         config = dict()
 
         for common_param in Constants.COMMON_PARAMS:

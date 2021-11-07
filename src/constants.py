@@ -1,2 +1,32 @@
 class Constants:
     ALGORITHMS = {'PPO', 'SAC'}
+    COMMON_PARAMS = {
+        'env',
+        'gamma',
+        'fcnet_activation',
+        'train_batch_size',
+        'evaluation_interval'
+    }
+
+    PPO_SPECIFIC_PARAMS = {
+        'fcnet_hiddens',
+        'clip_param',
+        'lambda',
+        'num_sgd_iter',
+        'sgd_minibatch_size',
+        'vf_clip_param',
+        'kl_target',
+        'clip_param',
+        'lr'
+    }
+
+    SAC_SPECIFIC_PARAMS = {
+        'actor_lr',
+        'critic_lr',
+        'policy_layers',
+        'q_value_layers',
+        'initial_alpha',
+        'buffer_size',
+        'tau',
+        'learning_starts',
+    }

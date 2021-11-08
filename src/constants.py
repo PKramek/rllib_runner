@@ -37,3 +37,7 @@ class Constants:
         'tau',
         'learning_starts',
     }
+
+    # Env variables used in evaluation results data extraction
+    ENV_PROGRESS_FILE_PATH = 'PROGRESS_FILE_PATH'
+    ENV_EVALUATION_RESULTS_FILE_PATH = 'EVALUATION_RESULTS_FILE_PATH'

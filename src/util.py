@@ -1,5 +1,11 @@
+import os
 from datetime import datetime
 from typing import Dict, Iterable, Tuple
+
+import pandas as pd
+from ray import tune
+
+from src.constants import Constants
 
 
 def split_dictionary(dictionary: Dict, keys: Iterable) -> Tuple[Dict, Dict]:
@@ -41,12 +47,83 @@ def get_sub_dictionary(dictionary: Dict, keys: Iterable) -> Dict:
     return with_keys
 
 
-def trial_name_generator(trial):
+def trial_name_generator(trial: tune.trial.Trial) -> str:
+    """
+    Generates name of the single trial for RLLib`s tune.run function
+
+    :param trial: trial object
+    :return: trial name for tune.run function
+    """
+    logs_dir = os.environ['TENSORBOARD_LOGS_DIR']
     now = datetime.now()
     dt_string = now.strftime("%d-%m-%Y_%H-%M-%S")
 
     trial_name = f"{trial.trainable_name}_{dt_string}"
+    progress_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/progress.csv"
+    eval_results_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/evaluation_results.csv"
 
-    print(f"Trial name: {trial_name}")
+    print(f"Setting {Constants.ENV_EVALUATION_RESULTS_FILE_PATH} env variable to: {eval_results_path}")
+    os.environ[Constants.ENV_EVALUATION_RESULTS_FILE_PATH] = eval_results_path
+
+    print(f"Setting {Constants.ENV_PROGRESS_FILE_PATH} env variable to: {progress_path}")
+    os.environ[Constants.ENV_PROGRESS_FILE_PATH] = progress_path
+
+    print(f"Results will be saved in: {logs_dir}/{trial.trainable_name}/{trial_name}")
 
     return trial_name
+
+
+def trial_dirname_creator(trial: tune.trial.Trial):
+    """
+    Generates name of the directory for RLLib`s tune.run function
+
+    :param trial: trial object
+    :return: directory name for tune.run function
+    """
+    return str(trial)
+
+
+def get_eval_results_df_from_progress_df(progress_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Creates evaluation results dataframe containing information about evaluation runs results
+
+    :param progress_df: Dataframe created from progress.csv file
+    :return: Dataframe containing metrics about evaluation runs from training process
+    """
+    columns_mapping = {
+        'timesteps_total': 'time_step',
+        'evaluation/episode_reward_max': 'eval_return_max',
+        'evaluation/episode_reward_min': 'eval_return_min',
+        'evaluation/episode_reward_mean': 'eval_return_mean',
+        'evaluation/episode_len_mean': 'eval_episode_len_mean'
+    }
+    evaluation_results_df = progress_df[columns_mapping]
+    evaluation_results_df = evaluation_results_df.rename(columns=columns_mapping)
+
+    return evaluation_results_df
+
+
+def create_and_save_evaluation_results_file() -> pd.DataFrame:
+    """
+    Creates evaluation results dataframe and saves it in a file named evaluation_results.csv inside training results
+    directory
+
+    :return: Dataframe containing metrics about evaluation runs from training process
+    """
+    progress_path = os.getenv(Constants.ENV_PROGRESS_FILE_PATH)
+    if progress_path is None:
+        raise RuntimeError(f"{Constants.ENV_PROGRESS_FILE_PATH} environment variable not set!")
+
+    eval_results_path = os.getenv(Constants.ENV_EVALUATION_RESULTS_FILE_PATH)
+    if eval_results_path is None:
+        raise RuntimeError(f"{Constants.ENV_EVALUATION_RESULTS_FILE_PATH} environment variable not set!")
+
+    progress_df = pd.read_csv(progress_path)
+
+    evaluation_results_df = get_eval_results_df_from_progress_df(progress_df)
+    evaluation_results_df.to_csv(path_or_buf=eval_results_path)
+
+    # Do not remove this print function call, it is used by log parser inside Airflow
+    print(f"saved evaluation results in {eval_results_path}")
+
+    return evaluation_results_df

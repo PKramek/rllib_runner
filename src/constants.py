@@ -8,6 +8,13 @@ class Constants:
         'evaluation_interval'
     }
 
+    MODEL_PARAMS = {
+        'fcnet_activation',
+        'policy_layers',
+        'q_value_layers',
+        'fcnet_hiddens'
+    }
+
     PPO_SPECIFIC_PARAMS = {
         'fcnet_hiddens',
         'clip_param',

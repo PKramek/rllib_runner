@@ -1,84 +1,40 @@
-from abc import ABC, abstractmethod
-from typing import Dict
-
-import ray.rllib.agents.ppo as ppo
-import ray.rllib.agents.sac as sac
-
-from src.constants import Constants
+from typing import Dict, Iterable, Tuple
 
 
-class AlgorithmStrategy(ABC):
-    @property
-    @abstractmethod
-    def _rl_lib_algorithm(self):
-        pass
+def split_dictionary(dictionary: Dict, keys: Iterable) -> Tuple[Dict, Dict]:
+    """
+    Splits dictionary into two. Key, value pairs, where key is in keys iterable will be in one resulting dictionary and
+    all the rest of the pairs will be in second dictionary
 
-    @property
-    @abstractmethod
-    def algorithm_specific_parameters(self):
-        pass
+    :param dictionary: Dictionary to be split
+    :type dictionary: Dict
+    :param keys: Keys used to split dictionary. All the key, value pairs with key in that iterable will be in only one
+    resulting dictionary
+    :type keys: Iterable
+    :return: Two dictionaries, first contains all the key, value pairs where key was not preset in given keys iterable
+    :rtype: Tuple[Dict, Dict]
+    """
+    assert set(keys) <= set(dictionary.keys()), 'All keys must be in original dictionary'
 
-    def get_default_config(self) -> Dict:
-        return self._rl_lib_algorithm.DEFAULT_CONFIG.copy()
+    without_keys = {key: value for (key, value) in dictionary.items() if key not in keys}
+    with_keys = {key: value for (key, value) in dictionary.items() if key in keys}
 
-    def get_config_from_args_params(self, args_params: Dict) -> Dict:
-        # TODO refactor this method
-        config = dict()
-
-        for common_param in Constants.COMMON_PARAMS:
-            if common_param == 'train_batch_size':
-                config['sgd_minibatch_size'] = args_params[common_param]
-                config['train_batch_size'] = args_params[common_param]
-            if common_param == 'fcnet_activation':
-                try:
-                    config['model'][common_param] = args_params[common_param]
-                except KeyError:
-                    config['model'] = dict()
-                    config['model'][common_param] = args_params[common_param]
-            else:
-                config[common_param] = args_params[common_param]
-
-        for algorithm_param in self.algorithm_specific_parameters:
-            if algorithm_param == 'fcnet_hiddens':
-                config['model'][algorithm_param] = args_params[algorithm_param]
-            else:
-                config[algorithm_param] = args_params[algorithm_param]
-
-        return config
+    return without_keys, with_keys
 
 
-class PPOStrategy(AlgorithmStrategy):
-    @property
-    def _rl_lib_algorithm(self):
-        return ppo
+def get_sub_dictionary(dictionary: Dict, keys: Iterable) -> Dict:
+    """
+    Return dictionary containing only those key, value pairs which have key in keys iterable
 
-    @property
-    def algorithm_specific_parameters(self):
-        return Constants.PPO_SPECIFIC_PARAMS
+    :param dictionary: Dictionary to get sub dictionary from
+    :type dictionary: Dict
+    :param keys: Subset of original dictionary keys
+    :type keys: Iterable
+    :return: Sub dictionary
+    :rtype: Dictionary
+    """
+    assert set(keys) <= set(dictionary.keys()), "All keys must be in original dictionary"
 
+    with_keys = {key: value for (key, value) in dictionary.items() if key in keys}
 
-class SACStrategy(AlgorithmStrategy):
-
-    @property
-    def _rl_lib_algorithm(self):
-        return sac
-
-    @property
-    def algorithm_specific_parameters(self):
-        return Constants.SAC_SPECIFIC_PARAMS
-
-
-class AlgorithmFactory:
-    _ALGORITHM_MAPPING = {
-        'PPO': PPOStrategy,
-        'SAC': SACStrategy
-    }
-
-    @staticmethod
-    def get_algorithm(algorithm: str) -> AlgorithmStrategy:
-        algorithm = AlgorithmFactory._ALGORITHM_MAPPING.get(algorithm, None)
-
-        if algorithm is None:
-            raise ValueError(f"Unknown algorithm: {algorithm}")
-
-        return algorithm()
+    return with_keys

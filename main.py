@@ -4,7 +4,7 @@ import ray
 from ray import tune
 
 from src.args_parser import parser
-from src.util import AlgorithmFactory
+from src.algorithms import AlgorithmFactory
 
 if __name__ == "__main__":
     args = vars(parser.parse_args())

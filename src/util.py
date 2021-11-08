@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Dict, Iterable, Tuple
 
 
@@ -38,3 +39,14 @@ def get_sub_dictionary(dictionary: Dict, keys: Iterable) -> Dict:
     with_keys = {key: value for (key, value) in dictionary.items() if key in keys}
 
     return with_keys
+
+
+def trial_name_generator(trial):
+    now = datetime.now()
+    dt_string = now.strftime("%d-%m-%Y_%H-%M-%S")
+
+    trial_name = f"{trial.trainable_name}_{dt_string}"
+
+    print(f"Trial name: {trial_name}")
+
+    return trial_name

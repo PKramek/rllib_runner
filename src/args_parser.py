@@ -32,8 +32,8 @@ parser.add_argument('--sgd_minibatch_size', type=int, help='Minibatch size in PP
 
 # TODO add Target update interval
 # parser.add_argument('--n_step', type=int, help='Target update interval', default=64)
-parser.add_argument('--evaluation_interval', help='Number of training iterations between evaluations. None disables '
-                                                  'evaluation', type=int, default=20)
+parser.add_argument('--evaluation_interval', help='Number of training iterations between evaluations. None disables'
+                                                  'evaluation', type=int, default=5)
 parser.add_argument('--evaluation_num_episodes', help='Number of evaluation runs', type=int, default=10)
 parser.add_argument('--fcnet_activation', type=str, help='Activation function used in hidden layers',
                     default="tanh", choices={'tanh', 'relu'})

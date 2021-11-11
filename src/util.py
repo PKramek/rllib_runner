@@ -54,11 +54,12 @@ def trial_name_generator(trial: tune.trial.Trial) -> str:
     :param trial: trial object
     :return: trial name for tune.run function
     """
-    logs_dir = os.environ['TENSORBOARD_LOGS_DIR']
+    logs_dir = Constants.LOGS_DIRECTORY
     now = datetime.now()
     dt_string = now.strftime("%d-%m-%Y_%H-%M-%S")
+    environment_name = trial.config['env']
 
-    trial_name = f"{trial.trainable_name}_{dt_string}"
+    trial_name = f"{environment_name}_{trial.trainable_name}_{dt_string}"
     progress_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/progress.csv"
     eval_results_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/evaluation_results.csv"
 

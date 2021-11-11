@@ -1,4 +1,3 @@
-import os
 from pprint import pprint
 
 import ray
@@ -6,6 +5,7 @@ from ray import tune
 
 from src.algorithms import AlgorithmFactory
 from src.args_parser import parser
+from src.constants import Constants
 from src.util import trial_name_generator, trial_dirname_creator, create_and_save_evaluation_results_file
 
 if __name__ == "__main__":
@@ -25,7 +25,7 @@ if __name__ == "__main__":
         algorithm_name,
         stop={"timesteps_total": max_timesteps},
         config=config,
-        local_dir=os.environ['TENSORBOARD_LOGS_DIR'],
+        local_dir=Constants.LOGS_DIRECTORY,
         trial_dirname_creator=trial_dirname_creator,
         trial_name_creator=trial_name_generator
     )

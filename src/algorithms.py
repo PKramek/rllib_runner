@@ -38,7 +38,6 @@ class AlgorithmStrategy(ABC):
         return algorithm_params
 
 
-
 class PPOStrategy(AlgorithmStrategy):
     @property
     def _rl_lib_algorithm(self):

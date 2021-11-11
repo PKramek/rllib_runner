@@ -64,11 +64,11 @@ def trial_name_generator(trial: tune.trial.Trial) -> str:
 
     trial_name = f"{environment_name}_{trial.trainable_name}_{dt_string}"
     progress_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/progress.csv"
-    eval_results_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/results.csv"
+    eval_results_dir = f"{logs_dir}/{trial.trainable_name}/{trial_name}"
 
     rllib_runner_logger.warning(
-        f"Setting {Constants.ENV_EVALUATION_RESULTS_FILE_PATH} env variable to: {eval_results_path}")
-    os.environ[Constants.ENV_EVALUATION_RESULTS_FILE_PATH] = eval_results_path
+        f"Setting {Constants.ENV_EVALUATION_RESULTS_DIR_PATH} env variable to: {eval_results_dir}")
+    os.environ[Constants.ENV_EVALUATION_RESULTS_DIR_PATH] = eval_results_dir
 
     rllib_runner_logger.warning(f"Setting {Constants.ENV_PROGRESS_FILE_PATH} env variable to: {progress_path}")
     os.environ[Constants.ENV_PROGRESS_FILE_PATH] = progress_path
@@ -119,14 +119,14 @@ def create_and_save_evaluation_results_file() -> pd.DataFrame:
     if progress_path is None:
         raise RuntimeError(f"{Constants.ENV_PROGRESS_FILE_PATH} environment variable not set!")
 
-    eval_results_path = os.getenv(Constants.ENV_EVALUATION_RESULTS_FILE_PATH)
+    eval_results_path = os.getenv(Constants.ENV_EVALUATION_RESULTS_DIR_PATH)
     if eval_results_path is None:
-        raise RuntimeError(f"{Constants.ENV_EVALUATION_RESULTS_FILE_PATH} environment variable not set!")
+        raise RuntimeError(f"{Constants.ENV_EVALUATION_RESULTS_DIR_PATH} environment variable not set!")
 
     progress_df = pd.read_csv(progress_path)
 
     evaluation_results_df = get_eval_results_df_from_progress_df(progress_df)
-    evaluation_results_df.to_csv(path_or_buf=eval_results_path)
+    evaluation_results_df.to_csv(path_or_buf=f"{eval_results_path}/results.csv")
 
     # Do not remove this logging call, it is used by log parser inside Airflow
     rllib_runner_logger.warning(f"saved evaluation results in {eval_results_path}")

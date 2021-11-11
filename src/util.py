@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import datetime
 from typing import Dict, Iterable, Tuple
@@ -63,13 +64,13 @@ def trial_name_generator(trial: tune.trial.Trial) -> str:
     progress_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/progress.csv"
     eval_results_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/evaluation_results.csv"
 
-    print(f"Setting {Constants.ENV_EVALUATION_RESULTS_FILE_PATH} env variable to: {eval_results_path}")
+    logging.info(f"Setting {Constants.ENV_EVALUATION_RESULTS_FILE_PATH} env variable to: {eval_results_path}")
     os.environ[Constants.ENV_EVALUATION_RESULTS_FILE_PATH] = eval_results_path
 
-    print(f"Setting {Constants.ENV_PROGRESS_FILE_PATH} env variable to: {progress_path}")
+    logging.info(f"Setting {Constants.ENV_PROGRESS_FILE_PATH} env variable to: {progress_path}")
     os.environ[Constants.ENV_PROGRESS_FILE_PATH] = progress_path
 
-    print(f"Results will be saved in: {logs_dir}/{trial.trainable_name}/{trial_name}")
+    logging.info(f"Results will be saved in: {logs_dir}/{trial.trainable_name}/{trial_name}")
 
     return trial_name
 
@@ -124,7 +125,7 @@ def create_and_save_evaluation_results_file() -> pd.DataFrame:
     evaluation_results_df = get_eval_results_df_from_progress_df(progress_df)
     evaluation_results_df.to_csv(path_or_buf=eval_results_path)
 
-    # Do not remove this print function call, it is used by log parser inside Airflow
-    print(f"saved evaluation results in {eval_results_path}")
+    # Do not remove this logging.info function call, it is used by log parser inside Airflow
+    logging.info(f"saved evaluation results in {eval_results_path}")
 
     return evaluation_results_df

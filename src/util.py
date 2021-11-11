@@ -64,7 +64,7 @@ def trial_name_generator(trial: tune.trial.Trial) -> str:
 
     trial_name = f"{environment_name}_{trial.trainable_name}_{dt_string}"
     progress_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/progress.csv"
-    eval_results_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/evaluation_results.csv"
+    eval_results_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/results.csv"
 
     rllib_runner_logger.warning(
         f"Setting {Constants.ENV_EVALUATION_RESULTS_FILE_PATH} env variable to: {eval_results_path}")
@@ -141,11 +141,11 @@ def add_tune_specific_config_fields(config: Dict) -> Dict:
 
 
 def setup_logger(logger_name, level=logging.INFO):
-    l = logging.getLogger(logger_name)
+    logger = logging.getLogger(logger_name)
     formatter = logging.Formatter('%(message)s')
 
     streamHandler = logging.StreamHandler()
     streamHandler.setFormatter(formatter)
 
-    l.setLevel(level)
-    l.addHandler(streamHandler)
+    logger.setLevel(level)
+    logger.addHandler(streamHandler)

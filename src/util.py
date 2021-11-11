@@ -8,6 +8,8 @@ from ray import tune
 
 from src.constants import Constants
 
+rllib_runner_logger = logging.getLogger(Constants.LOGGER_NAME)
+
 
 def split_dictionary(dictionary: Dict, keys: Iterable) -> Tuple[Dict, Dict]:
     """
@@ -64,13 +66,14 @@ def trial_name_generator(trial: tune.trial.Trial) -> str:
     progress_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/progress.csv"
     eval_results_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/evaluation_results.csv"
 
-    logging.info(f"Setting {Constants.ENV_EVALUATION_RESULTS_FILE_PATH} env variable to: {eval_results_path}")
+    rllib_runner_logger.warning(
+        f"Setting {Constants.ENV_EVALUATION_RESULTS_FILE_PATH} env variable to: {eval_results_path}")
     os.environ[Constants.ENV_EVALUATION_RESULTS_FILE_PATH] = eval_results_path
 
-    logging.info(f"Setting {Constants.ENV_PROGRESS_FILE_PATH} env variable to: {progress_path}")
+    rllib_runner_logger.warning(f"Setting {Constants.ENV_PROGRESS_FILE_PATH} env variable to: {progress_path}")
     os.environ[Constants.ENV_PROGRESS_FILE_PATH] = progress_path
 
-    logging.info(f"Results will be saved in: {logs_dir}/{trial.trainable_name}/{trial_name}")
+    rllib_runner_logger.warning(f"Results will be saved in: {logs_dir}/{trial.trainable_name}/{trial_name}")
 
     return trial_name
 
@@ -94,12 +97,12 @@ def get_eval_results_df_from_progress_df(progress_df: pd.DataFrame) -> pd.DataFr
     """
     columns_mapping = {
         'timesteps_total': 'time_step',
-        'evaluation/episode_reward_max': 'eval_return_max',
-        'evaluation/episode_reward_min': 'eval_return_min',
-        'evaluation/episode_reward_mean': 'eval_return_mean',
-        'evaluation/episode_len_mean': 'eval_episode_len_mean'
+        'episode_reward_max': 'eval_return_max',
+        'episode_reward_min': 'eval_return_min',
+        'episode_reward_mean': 'eval_return_mean',
+        'episode_len_mean': 'eval_episode_len_mean'
     }
-    evaluation_results_df = progress_df[columns_mapping]
+    evaluation_results_df = progress_df[columns_mapping.keys()]
     evaluation_results_df = evaluation_results_df.rename(columns=columns_mapping)
 
     return evaluation_results_df
@@ -125,7 +128,24 @@ def create_and_save_evaluation_results_file() -> pd.DataFrame:
     evaluation_results_df = get_eval_results_df_from_progress_df(progress_df)
     evaluation_results_df.to_csv(path_or_buf=eval_results_path)
 
-    # Do not remove this logging.info function call, it is used by log parser inside Airflow
-    logging.info(f"saved evaluation results in {eval_results_path}")
+    # Do not remove this logging call, it is used by log parser inside Airflow
+    rllib_runner_logger.warning(f"saved evaluation results in {eval_results_path}")
 
     return evaluation_results_df
+
+
+def add_tune_specific_config_fields(config: Dict) -> Dict:
+    config['num_workers'] = 1
+
+    return config
+
+
+def setup_logger(logger_name, level=logging.INFO):
+    l = logging.getLogger(logger_name)
+    formatter = logging.Formatter('%(message)s')
+
+    streamHandler = logging.StreamHandler()
+    streamHandler.setFormatter(formatter)
+
+    l.setLevel(level)
+    l.addHandler(streamHandler)

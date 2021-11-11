@@ -42,4 +42,4 @@ class Constants:
     ENV_PROGRESS_FILE_PATH = 'PROGRESS_FILE_PATH'
     ENV_EVALUATION_RESULTS_FILE_PATH = 'EVALUATION_RESULTS_FILE_PATH'
     LOGS_DIRECTORY = '/tensorboard_logs'
-
+    LOGGER_NAME = 'rllib_runner_logger'

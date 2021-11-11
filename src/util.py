@@ -135,7 +135,7 @@ def create_and_save_evaluation_results_file() -> pd.DataFrame:
 
 
 def add_tune_specific_config_fields(config: Dict) -> Dict:
-    config['num_workers'] = 1
+    config['num_workers'] = 2
 
     return config
 

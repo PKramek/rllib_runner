@@ -146,9 +146,9 @@ def add_tune_specific_config_fields(config: Dict) -> Dict:
         rllib_runner_logger.warning(
             f"NUM_OF_WORKERS env variable not set, setting number of workers to default: {num_of_workers}")
 
-    config['num_workers'] = num_of_workers
+    config['num_workers'] = int(num_of_workers)
 
-    rllib_runner_logger.warning(f"Number of workers set to{config['num_workers']}")
+    rllib_runner_logger.warning(f"Number of workers set to: {config['num_workers']}")
 
     return config
 

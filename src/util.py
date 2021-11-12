@@ -157,15 +157,17 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits) -> str:
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def setup_logger(logger_name, level=logging.INFO) -> None:
+def setup_logger(logger_name, level=logging.INFO) -> logging.Logger:
     logger = logging.getLogger(logger_name)
     formatter = logging.Formatter('%(message)s')
 
-    streamHandler = logging.StreamHandler()
-    streamHandler.setFormatter(formatter)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
 
     logger.setLevel(level)
-    logger.addHandler(streamHandler)
+    logger.addHandler(stream_handler)
+
+    return logger
 
 
 def get_max_memory_size() -> Optional[int]:

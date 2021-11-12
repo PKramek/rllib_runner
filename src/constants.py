@@ -4,19 +4,17 @@ class Constants:
         'env',
         'gamma',
         'fcnet_activation',
+        'fcnet_hiddens',
         'train_batch_size',
         'evaluation_interval'
     }
 
     MODEL_PARAMS = {
-        'fcnet_activation',
         'policy_layers',
         'q_value_layers',
-        'fcnet_hiddens'
     }
 
     PPO_SPECIFIC_PARAMS = {
-        'fcnet_hiddens',
         'clip_param',
         'lambda',
         'num_sgd_iter',

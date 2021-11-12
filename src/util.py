@@ -3,7 +3,7 @@ import os
 import random
 import string
 from datetime import datetime
-from typing import Dict, Iterable, Tuple
+from typing import Dict, Iterable, Tuple, Optional
 
 import pandas as pd
 from ray import tune
@@ -153,11 +153,11 @@ def add_tune_specific_config_fields(config: Dict) -> Dict:
     return config
 
 
-def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits) -> str:
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def setup_logger(logger_name, level=logging.INFO):
+def setup_logger(logger_name, level=logging.INFO) -> None:
     logger = logging.getLogger(logger_name)
     formatter = logging.Formatter('%(message)s')
 
@@ -166,3 +166,12 @@ def setup_logger(logger_name, level=logging.INFO):
 
     logger.setLevel(level)
     logger.addHandler(streamHandler)
+
+
+def get_max_memory_size() -> Optional[int]:
+    max_memory_size = os.getenv("MAX_MEMORY_SIZE")
+
+    if max_memory_size is None:
+        return max_memory_size
+    else:
+        return int(max_memory_size)

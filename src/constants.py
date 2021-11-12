@@ -10,6 +10,8 @@ class Constants:
     }
 
     MODEL_PARAMS = {
+        'fcnet_activation',
+        'fcnet_hiddens',
         'policy_layers',
         'q_value_layers',
     }

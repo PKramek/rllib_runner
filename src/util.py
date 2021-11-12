@@ -138,7 +138,17 @@ def create_and_save_evaluation_results_file() -> pd.DataFrame:
 
 
 def add_tune_specific_config_fields(config: Dict) -> Dict:
-    config['num_workers'] = 2
+    default_num_of_workers = 2
+    num_of_workers = os.getenv("NUM_OF_WORKERS")
+
+    if num_of_workers is None:
+        num_of_workers = default_num_of_workers
+        rllib_runner_logger.warning(
+            f"NUM_OF_WORKERS env variable not set, setting number of workers to default: {num_of_workers}")
+
+    config['num_workers'] = num_of_workers
+
+    rllib_runner_logger.warning(f"Number of workers set to{config['num_workers']}")
 
     return config
 

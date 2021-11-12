@@ -1,5 +1,7 @@
 import logging
 import os
+import random
+import string
 from datetime import datetime
 from typing import Dict, Iterable, Tuple
 
@@ -61,8 +63,9 @@ def trial_name_generator(trial: tune.trial.Trial) -> str:
     now = datetime.now()
     dt_string = now.strftime("%d-%m-%Y_%H-%M-%S")
     environment_name = trial.config['env']
+    random_id = id_generator()
 
-    trial_name = f"{environment_name}_{trial.trainable_name}_{dt_string}"
+    trial_name = f"{environment_name}_{trial.trainable_name}_{random_id}_{dt_string}"
     progress_path = f"{logs_dir}/{trial.trainable_name}/{trial_name}/progress.csv"
     eval_results_dir = f"{logs_dir}/{trial.trainable_name}/{trial_name}"
 
@@ -138,6 +141,10 @@ def add_tune_specific_config_fields(config: Dict) -> Dict:
     config['num_workers'] = 2
 
     return config
+
+
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 def setup_logger(logger_name, level=logging.INFO):

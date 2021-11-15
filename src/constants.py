@@ -14,6 +14,7 @@ class Constants:
         'fcnet_hiddens',
         'policy_layers',
         'q_value_layers',
+        'policy_layers',
     }
 
     PPO_SPECIFIC_PARAMS = {
@@ -28,8 +29,9 @@ class Constants:
     }
 
     SAC_SPECIFIC_PARAMS = {
-        'actor_lr',
-        'critic_lr',
+        'actor_learning_rate',
+        'critic_learning_rate',
+        'entropy_learning_rate',
         'policy_layers',
         'q_value_layers',
         'initial_alpha',
@@ -38,8 +40,14 @@ class Constants:
         'learning_starts',
     }
 
+    OPTIMIZATION_PARAMS = {
+        'actor_learning_rate',
+        'critic_learning_rate',
+        'entropy_learning_rate'
+    }
+
     # Env variables used in evaluation results data extraction
     ENV_PROGRESS_FILE_PATH = 'PROGRESS_FILE_PATH'
     ENV_EVALUATION_RESULTS_DIR_PATH = 'EVALUATION_RESULTS_FILE_PATH'
-    LOGS_DIRECTORY = '/tensorboard_logs'
+    LOGS_DIRECTORY = '/home/peter/Programowanie/Magisterka/TEMP'
     LOGGER_NAME = 'rllib_runner_logger'

@@ -7,6 +7,7 @@ charset-normalizer==2.0.7
 click==8.0.3
 cloudpickle==2.0.0
 cycler==0.10.0
+decorator==5.1.0
 dm-tree==0.1.6
 filelock==3.3.1
 flatbuffers==1.12
@@ -55,6 +56,7 @@ tensorboard-plugin-wit==1.8.0
 tensorboardX==2.4
 tensorflow-estimator==2.4.0
 tensorflow-gpu==2.4.3
+tensorflow-probability==0.12.2
 termcolor==1.1.0
 tifffile==2021.10.12
 typing-extensions==3.7.4.3

@@ -2,16 +2,25 @@ import logging
 
 import ray
 from ray import tune
+from ray.tune.registry import register_env
 
 from src.algorithms import AlgorithmFactory
 from src.args_parser import parser
 from src.constants import Constants
+from src.reward_shaping.fi import FiFactory
+from src.reward_shaping.reward_shaping_creator import RewardShapingEnvironmentCreator
 from src.util import trial_name_generator, trial_dirname_creator, create_and_save_evaluation_results_file, setup_logger, \
     add_tune_specific_config_fields, get_max_memory_size
 
 if __name__ == "__main__":
+
     logger = setup_logger(Constants.LOGGER_NAME)
     args = vars(parser.parse_args())
+
+    environment_with_reward_shaping = RewardShapingEnvironmentCreator(
+        "CartPole-v1", args["gamma"],
+        FiFactory.get_fi("default"))
+    register_env("RewardShapingHumanoid-v2", environment_with_reward_shaping)
 
     algorithm_name = args.pop('algo')
     max_timesteps = args.pop('max_timesteps')

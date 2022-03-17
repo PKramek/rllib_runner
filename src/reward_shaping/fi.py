@@ -16,10 +16,22 @@ class SumFi(Fi):
         return np.sum(state)
 
 
+class HumanoidFi(Fi):
+    @staticmethod
+    def _normal_dist_density(x: float, mean: float, sd: float):
+        prob_density = (np.pi * sd) * np.exp(-0.5 * ((x - mean) / sd) ** 2)
+        return prob_density
+
+    def __call__(self, state):
+        # Value of density function is multiplied by 2000, so that its highest possible value is around 300
+        return 2000 * HumanoidFi._normal_dist_density(state[0], 1.4, 0.05)
+
+
 class FiFactory:
     FI_MAPPING = {
         'sum': SumFi,
-        'default': SumFi
+        'humanoid': HumanoidFi,
+        'default': HumanoidFi
     }
 
     @staticmethod

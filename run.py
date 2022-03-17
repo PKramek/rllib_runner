@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     fi_x = FiFactory.get_fi("default")
     environment_with_reward_shaping = RewardShapingEnvironmentCreator(
-        "CartPole-v1", args["gamma"],
+        "Humanoid-v2", args["gamma"],
         fi_x,
         fi_x([1.4]))
     register_env("RewardShapingHumanoid-v2", environment_with_reward_shaping)

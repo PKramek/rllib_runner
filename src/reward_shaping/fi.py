@@ -27,11 +27,41 @@ class HumanoidFi(Fi):
         return 2000 * HumanoidFi._normal_dist_density(state[0], 1.4, 0.05)
 
 
+class HumanoidQuadraticFi(Fi):
+    def __call__(self, state):
+        return -np.power((1.4 - state[0]) * 100, 2)
+
+
+class HumanoidFlatTopQuadraticFi(Fi):
+    def __call__(self, state):
+        return 0 if 1.35 < state[0] < 1.45 else -np.power((1.4 - state[0]) * 100, 2)
+
+
+class HumanoidBiQuadraticFi:
+    def __call__(self, state):
+        return -np.power((1.4 - state[0]) * 100, 4)
+
+
+class HumanoidFlatTopBiQuadraticFi(Fi):
+    def __call__(self, state):
+        return 0 if 1.35 < state[0] < 1.45 else -np.power((1.4 - state[0]) * 100, 4)
+
+
+class HumanoidEuclidean(Fi):
+    def __call__(self, state):
+        return - np.sqrt(np.power((1.4 - state[0]), 2)) * 1000
+
+
 class FiFactory:
     FI_MAPPING = {
         'sum': SumFi,
         'humanoid': HumanoidFi,
-        'default': HumanoidFi
+        'default': HumanoidFi,
+        'quadratic': HumanoidQuadraticFi,
+        'quadraticFlatTop': HumanoidFlatTopQuadraticFi,
+        'biquadratic': HumanoidBiQuadraticFi,
+        'biquadraticFlatTop': HumanoidFlatTopBiQuadraticFi,
+        'euclidian': HumanoidEuclidean
     }
 
     @staticmethod

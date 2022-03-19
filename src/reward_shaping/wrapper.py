@@ -10,7 +10,7 @@ class RewardShapingWrapper(gym.Wrapper):
         assert isinstance(env, gym.Env), "Environment must be a gym environment"
         assert isinstance(gamma, float) and 0 < gamma < 1, "Gamma parameter must be a float in range (0,1)"
         assert callable(fi), "Fi must be a callable"
-        assert isinstance(fi_t0, float), "Fi(t0) must be a float"
+        assert isinstance(fi_t0, float), f"Fi(t0) (passed value = {fi_t0}) must be a float not {type(fi_t0)}"
 
         super().__init__(env)
         self._fi = fi

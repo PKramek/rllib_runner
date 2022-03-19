@@ -34,7 +34,7 @@ class HumanoidQuadraticFi(Fi):
 
 class HumanoidFlatTopQuadraticFi(Fi):
     def __call__(self, state):
-        return 0 if 1.35 < state[0] < 1.45 else -np.power((1.4 - state[0]) * 100, 2)
+        return 0.0 if 1.35 < state[0] < 1.45 else -np.power((1.4 - state[0]) * 100, 2)
 
 
 class HumanoidBiQuadraticFi:
@@ -44,7 +44,7 @@ class HumanoidBiQuadraticFi:
 
 class HumanoidFlatTopBiQuadraticFi(Fi):
     def __call__(self, state):
-        return 0 if 1.35 < state[0] < 1.45 else -np.power((1.4 - state[0]) * 100, 4)
+        return 0.0 if 1.35 < state[0] < 1.45 else -np.power((1.4 - state[0]) * 100, 4)
 
 
 class HumanoidEuclidean(Fi):

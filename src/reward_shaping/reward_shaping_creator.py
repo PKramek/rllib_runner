@@ -8,7 +8,7 @@ class RewardShapingEnvironmentCreator:
         assert isinstance(env, str), "Environment parameter must be a string"
         assert isinstance(gamma, float) and 0 < gamma < 1, "Gamma parameter must be a float in range (0,1)"
         assert callable(fi), "Fi must be a callable"
-        assert isinstance(fi_t0, float), "Fi(t0) must be a float"
+        assert isinstance(fi_t0, float), f"Fi(t0) (passed value = {fi_t0}) must be a float not {type(fi_t0)}"
 
         self._environment_name = env
         self._gamma = gamma

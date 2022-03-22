@@ -37,6 +37,26 @@ class HumanoidFlatTopQuadraticFi(Fi):
         return 0.0 if 1.35 < state[0] < 1.45 else -np.power((1.4 - state[0]) * 100, 2)
 
 
+class HumanoidNarrowFlatTopQuadraticFi(Fi):
+    def __call__(self, state):
+        return 0.0 if 1.375 < state[0] < 1.425 else -np.power((1.4 - state[0]) * 100, 2)
+
+
+class HumanoidVeryNarrowFlatTopQuadraticFi(Fi):
+    def __call__(self, state):
+        return 0.0 if 1.39 < state[0] < 1.41 else -np.power((1.4 - state[0]) * 100, 2)
+
+
+class HumanoidWideFlatTopQuadraticFi(Fi):
+    def __call__(self, state):
+        return 0.0 if 1.3 < state[0] < 1.5 else -np.power((1.4 - state[0]) * 100, 2)
+
+
+class HumanoidVeryWideFlatTopQuadraticFi(Fi):
+    def __call__(self, state):
+        return 0.0 if 1.2 < state[0] < 1.6 else -np.power((1.4 - state[0]) * 100, 2)
+
+
 class HumanoidBiQuadraticFi:
     def __call__(self, state):
         return -np.power((1.4 - state[0]) * 100, 4)
@@ -61,6 +81,10 @@ class FiFactory:
         'quadraticFlatTop': HumanoidFlatTopQuadraticFi,
         'biquadratic': HumanoidBiQuadraticFi,
         'biquadraticFlatTop': HumanoidFlatTopBiQuadraticFi,
+        'quadraticNarrowFlatTop': HumanoidNarrowFlatTopQuadraticFi,
+        'quadraticWideFlatTop': HumanoidWideFlatTopQuadraticFi,
+        'quadraticVeryNarrowFlatTop': HumanoidVeryNarrowFlatTopQuadraticFi,
+        'quadraticVeryWideFlatTop': HumanoidVeryWideFlatTopQuadraticFi,
         'euclidian': HumanoidEuclidean
     }
 

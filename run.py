@@ -29,7 +29,7 @@ if __name__ == "__main__":
         environment_with_reward_shaping = RewardShapingEnvironmentCreator(
             "CartPole-v1", args["gamma"],  # "Humanoid-v2"
             fi_x,
-            fi_x([1.4]))
+            fi_x([1.4, 0, 0, 0, 0, 0, 0, 0]))
         env_name = f"{fi_name}RewardShapingHumanoid-v2"
         register_env(env_name, environment_with_reward_shaping)
         logger.info(f"Registering environment: {env_name}")

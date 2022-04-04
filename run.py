@@ -16,23 +16,24 @@ if __name__ == "__main__":
 
     logger = setup_logger(Constants.LOGGER_NAME)
     args = vars(parser.parse_args())
+    base_environment = "Humanoid-v2"
 
     logger.info("Registering new environments...")
     test_fi_names = [
         'quadratic', 'quadraticFlatTop', 'quadraticNarrowFlatTop',
         'quadraticWideFlatTop', 'quadraticVeryNarrowFlatTop',
         'quadraticVeryWideFlatTop', 'biquadratic',
-        'biquadraticFlatTop', 'euclidian', 'quadraticWideFlatTopWithBodyTiltFi']
+        'biquadraticFlatTop', 'euclidian', 'quadraticWideFlatTopWithBodyTilt']
 
     for fi_name in test_fi_names:
         fi_x = FiFactory.get_fi(fi_name)
         environment_with_reward_shaping = RewardShapingEnvironmentCreator(
-            "Humanoid-v2", args["gamma"],
+            base_environment, args["gamma"],
             fi_x,
             fi_x([1.4, 0, 0, 0, 0, 0, 0, 0]))
         env_name = f"{fi_name}RewardShapingHumanoid-v2"
         register_env(env_name, environment_with_reward_shaping)
-        logger.info(f"Registering environment: {env_name}")
+        logger.info(f"Registering environment: {env_name}, base environment: {base_environment}")
 
     logger.info("Reward shaping environments registered.")
 

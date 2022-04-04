@@ -22,12 +22,12 @@ if __name__ == "__main__":
         'quadratic', 'quadraticFlatTop', 'quadraticNarrowFlatTop',
         'quadraticWideFlatTop', 'quadraticVeryNarrowFlatTop',
         'quadraticVeryWideFlatTop', 'biquadratic',
-        'biquadraticFlatTop', 'euclidian']
+        'biquadraticFlatTop', 'euclidian', 'quadraticWideFlatTopWithBodyTiltFi']
 
     for fi_name in test_fi_names:
         fi_x = FiFactory.get_fi(fi_name)
         environment_with_reward_shaping = RewardShapingEnvironmentCreator(
-            "Humanoid-v2", args["gamma"],
+            "CartPole-v1", args["gamma"],  # "Humanoid-v2"
             fi_x,
             fi_x([1.4]))
         env_name = f"{fi_name}RewardShapingHumanoid-v2"
@@ -54,6 +54,8 @@ if __name__ == "__main__":
         ray.init(object_store_memory=max_memory_size)
         logger.warning(f"Max memory size set to: {max_memory_size}")
 
+    logger.info(f"local_dir={Constants.LOGS_DIRECTORY}")
+
     result = tune.run(
         algorithm_name,
         stop={"timesteps_total": max_timesteps},
@@ -63,5 +65,8 @@ if __name__ == "__main__":
         trial_name_creator=trial_name_generator
     )
 
+    'episode_reward_mean'
+
+    print(result)
     evaluation_results_df = create_and_save_evaluation_results_file()
     logging.info(f"Evaluation results df:\n{evaluation_results_df}")

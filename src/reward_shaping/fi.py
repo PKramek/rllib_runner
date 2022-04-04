@@ -52,6 +52,16 @@ class HumanoidWideFlatTopQuadraticFi(Fi):
         return 0.0 if 1.3 < state[0] < 1.5 else -np.power((1.4 - state[0]) * 100, 2)
 
 
+class HumanoidWideFlatTopQuadraticBigPenaltyFi(Fi):
+    def __call__(self, state):
+        return 0.0 if 1.3 < state[0] < 1.5 else -np.power((1.4 - state[0]) * 1000, 2)
+
+
+class HumanoidWideFlatTopQuadraticSmallPenaltyFi(Fi):
+    def __call__(self, state):
+        return 0.0 if 1.3 < state[0] < 1.5 else -np.power((1.4 - state[0]) * 50, 2)
+
+
 class HumanoidWideFlatTopQuadraticWithBodyTiltFi(Fi):
     def _height_penalty(self, state):
         index = 0
@@ -70,19 +80,45 @@ class HumanoidWideFlatTopQuadraticWithBodyTiltFi(Fi):
             state)
 
 
+class HumanoidWideFlatTopQuadraticWithBodyTiltLowerPenaltyFi(Fi):
+    def _height_penalty(self, state):
+        index = 0
+        return 0.0 if 1.3 < state[index] < 1.5 else -np.power((1.4 - state[index]) * 100, 2)
+
+    def _forward_tilt_penalty(self, state):
+        index = 3  # In qpos its under index 5, but observation cuts first two elements
+        return 0.0 if -0.15 < state[index] < 0.15 else -np.power((state[index]) * 50, 2)
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        index = 3  # In qpos its under index 6, but observation cuts first two elements
+        return 0.0 if -0.1 < state[index] < 0.1 else -np.power((state[index]) * 50, 2)
+
+    def __call__(self, state):
+        return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
+            state)
+
+
+class HumanoidWideFlatTopQuadraticWithBodyTiltWide(Fi):
+    def _height_penalty(self, state):
+        index = 0
+        return 0.0 if 1.3 < state[index] < 1.5 else -np.power((1.4 - state[index]) * 100, 2)
+
+    def _forward_tilt_penalty(self, state):
+        index = 3  # In qpos its under index 5, but observation cuts first two elements
+        return 0.0 if -0.2 < state[index] < 0.2 else -np.power((state[index]) * 50, 2)
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        index = 3  # In qpos its under index 6, but observation cuts first two elements
+        return 0.0 if -0.2 < state[index] < 0.2 else -np.power((state[index]) * 50, 2)
+
+    def __call__(self, state):
+        return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
+            state)
+
+
 class HumanoidVeryWideFlatTopQuadraticFi(Fi):
     def __call__(self, state):
         return 0.0 if 1.2 < state[0] < 1.6 else -np.power((1.4 - state[0]) * 100, 2)
-
-
-class HumanoidBiQuadraticFi:
-    def __call__(self, state):
-        return -np.power((1.4 - state[0]) * 100, 4)
-
-
-class HumanoidFlatTopBiQuadraticFi(Fi):
-    def __call__(self, state):
-        return 0.0 if 1.35 < state[0] < 1.45 else -np.power((1.4 - state[0]) * 100, 4)
 
 
 class HumanoidEuclidean(Fi):
@@ -92,19 +128,16 @@ class HumanoidEuclidean(Fi):
 
 class FiFactory:
     FI_MAPPING = {
-        'sum': SumFi,
-        'humanoid': HumanoidFi,
-        'default': HumanoidFi,
-        'quadratic': HumanoidQuadraticFi,
         'quadraticFlatTop': HumanoidFlatTopQuadraticFi,
-        'biquadratic': HumanoidBiQuadraticFi,
-        'biquadraticFlatTop': HumanoidFlatTopBiQuadraticFi,
         'quadraticNarrowFlatTop': HumanoidNarrowFlatTopQuadraticFi,
         'quadraticWideFlatTop': HumanoidWideFlatTopQuadraticFi,
+        'quadraticWideFlatTopBigPenalty': HumanoidWideFlatTopQuadraticBigPenaltyFi,
+        'quadraticWideFlatTopSmallPenalty': HumanoidWideFlatTopQuadraticSmallPenaltyFi,
         'quadraticVeryNarrowFlatTop': HumanoidVeryNarrowFlatTopQuadraticFi,
         'quadraticVeryWideFlatTop': HumanoidVeryWideFlatTopQuadraticFi,
-        'euclidian': HumanoidEuclidean,
-        'quadraticWideFlatTopWithBodyTilt': HumanoidWideFlatTopQuadraticWithBodyTiltFi
+        'quadraticWideFlatTopWithBodyTilt': HumanoidWideFlatTopQuadraticWithBodyTiltFi,
+        'quadraticWideFlatTopWithBodyTiltLowerPenalty': HumanoidWideFlatTopQuadraticWithBodyTiltLowerPenaltyFi,
+        'quadraticWideFlatTopWithBodyTiltWide': HumanoidWideFlatTopQuadraticWithBodyTiltWide
     }
 
     @staticmethod

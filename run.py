@@ -19,11 +19,8 @@ if __name__ == "__main__":
     base_environment = "Humanoid-v2"
 
     logger.info("Registering new environments...")
-    test_fi_names = [
-        'quadratic', 'quadraticFlatTop', 'quadraticNarrowFlatTop',
-        'quadraticWideFlatTop', 'quadraticVeryNarrowFlatTop',
-        'quadraticVeryWideFlatTop', 'biquadratic',
-        'biquadraticFlatTop', 'euclidian', 'quadraticWideFlatTopWithBodyTilt']
+
+    test_fi_names = FiFactory.FI_MAPPING.keys()
 
     for fi_name in test_fi_names:
         fi_x = FiFactory.get_fi(fi_name)

@@ -1,3 +1,4 @@
+import logging
 from abc import ABC, abstractmethod
 from typing import Type
 
@@ -101,7 +102,7 @@ class FiFactory:
         'quadraticVeryNarrowFlatTop': HumanoidVeryNarrowFlatTopQuadraticFi,
         'quadraticVeryWideFlatTop': HumanoidVeryWideFlatTopQuadraticFi,
         'euclidian': HumanoidEuclidean,
-        'quadraticWideFlatTopWithBodyTiltFi': HumanoidWideFlatTopQuadraticWithBodyTiltFi
+        'quadraticWideFlatTopWithBodyTilt': HumanoidWideFlatTopQuadraticWithBodyTiltFi
     }
 
     @staticmethod

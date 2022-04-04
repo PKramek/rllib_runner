@@ -27,7 +27,7 @@ if __name__ == "__main__":
     for fi_name in test_fi_names:
         fi_x = FiFactory.get_fi(fi_name)
         environment_with_reward_shaping = RewardShapingEnvironmentCreator(
-            "CartPole-v1", args["gamma"],  # "Humanoid-v2"
+            "Humanoid-v2", args["gamma"]
             fi_x,
             fi_x([1.4, 0, 0, 0, 0, 0, 0, 0]))
         env_name = f"{fi_name}RewardShapingHumanoid-v2"

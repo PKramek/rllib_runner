@@ -80,6 +80,7 @@ class HumanoidWideFlatTopQuadraticWithBodyTiltFi(Fi):
             state)
 
 
+# Current best
 class HumanoidWideFlatTopQuadraticWithBodyTiltLowerPenaltyFi(Fi):
     def _height_penalty(self, state):
         index = 0
@@ -96,6 +97,13 @@ class HumanoidWideFlatTopQuadraticWithBodyTiltLowerPenaltyFi(Fi):
     def __call__(self, state):
         return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
             state)
+
+
+class HumanoidWideFlatTopQuadraticWithForwardBodyTiltLowerPenaltyFi(
+    HumanoidWideFlatTopQuadraticWithBodyTiltLowerPenaltyFi):
+    def _forward_tilt_penalty(self, state):
+        index = 3  # In qpos its under index 5, but observation cuts first two elements
+        return 0.0 if 0.05 < state[index] < 0.15 else -np.power((state[index]) * 50, 2)
 
 
 class HumanoidWideFlatTopQuadraticWithBodyTiltWide(Fi):
@@ -137,6 +145,7 @@ class FiFactory:
         'quadraticVeryWideFlatTop': HumanoidVeryWideFlatTopQuadraticFi,
         'quadraticWideFlatTopWithBodyTilt': HumanoidWideFlatTopQuadraticWithBodyTiltFi,
         'quadraticWideFlatTopWithBodyTiltLowerPenalty': HumanoidWideFlatTopQuadraticWithBodyTiltLowerPenaltyFi,
+        'quadraticWideFlatTopWithForwardBodyTiltLowerPenalty': HumanoidWideFlatTopQuadraticWithForwardBodyTiltLowerPenaltyFi,
         'quadraticWideFlatTopWithBodyTiltWide': HumanoidWideFlatTopQuadraticWithBodyTiltWide
     }
 

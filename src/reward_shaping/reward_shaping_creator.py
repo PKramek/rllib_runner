@@ -3,8 +3,10 @@ import logging
 
 import gym
 
+from src.constants import Constants
 from src.reward_shaping.wrapper import RewardShapingWrapper
 
+logger = logging.getLogger(Constants.LOGGER_NAME)
 
 class RewardShapingEnvironmentCreator:
     def __init__(self, env: str, gamma: float, fi: callable, fi_t0: float):
@@ -25,8 +27,8 @@ class RewardShapingEnvironmentCreator:
         return wrapped_env
 
     def __call__(self, *args, **kwargs):
-        logging.info("Inside RewardShapingEnvironmentCreator __call__")
-        logging.info(f"Stack: {inspect.stack()}")
-        logging.info(f"Current frame: {inspect.currentframe()}")
+        logger.info("Inside RewardShapingEnvironmentCreator __call__")
+        logger.info(f"Stack: {inspect.stack()}")
+        logger.info(f"Current frame: {inspect.currentframe()}")
 
         return self._build_env()

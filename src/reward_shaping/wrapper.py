@@ -21,7 +21,9 @@ class RewardShapingWrapper(gym.Wrapper):
 
         self._sum_rewards = 0
         self._sum_modified_rewards = 0
-        self._sum_differences = []
+
+        self._payments = []
+        self._modified_payments = []
 
     def step(self, action):
         next_state, reward, done, info = self.env.step(action)
@@ -37,12 +39,12 @@ class RewardShapingWrapper(gym.Wrapper):
         return next_state, reward, done, info
 
     def reset(self, **kwargs):
-        self._sum_differences.append(self._sum_rewards - self._sum_modified_rewards)
-
+        self._payments.append(self._sum_rewards)
+        self._modified_payments.append(self._sum_modified_rewards)
         print("Inside RewardShapingWrapper reset")
         print(f"Stack: {inspect.stack()}")
-        print(f"Sum of rewards = {self._sum_rewards:.2f}, Sum of modified rewards = {self._sum_modified_rewards:.2f}")
-        print(f"Track of sum differences: {self._sum_differences}")
+        print(f"Payments track: {self._payments}")
+        print(f"Modified payments track: {self._modified_payments}")
 
         self._sum_rewards = 0
         self._sum_modified_rewards = 0

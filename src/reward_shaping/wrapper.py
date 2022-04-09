@@ -1,5 +1,4 @@
 import inspect
-import logging
 
 import gym
 
@@ -22,6 +21,7 @@ class RewardShapingWrapper(gym.Wrapper):
 
         self._sum_rewards = 0
         self._sum_modified_rewards = 0
+        self._sum_differences = []
 
     def step(self, action):
         next_state, reward, done, info = self.env.step(action)
@@ -37,10 +37,12 @@ class RewardShapingWrapper(gym.Wrapper):
         return next_state, reward, done, info
 
     def reset(self, **kwargs):
-        logging.info("Inside RewardShapingWrapper reset")
-        logging.info(f"Stack: {inspect.stack()}")
-        logging.info(
-            f"Sum of rewards = {self._sum_rewards:.2f}, Sum of modified rewards = {self._sum_modified_rewards:.2f}")
+        self._sum_differences.append(self._sum_rewards - self._sum_modified_rewards)
+
+        print("Inside RewardShapingWrapper reset")
+        print(f"Stack: {inspect.stack()}")
+        print(f"Sum of rewards = {self._sum_rewards:.2f}, Sum of modified rewards = {self._sum_modified_rewards:.2f}")
+        print(f"Track of sum differences: {self._sum_differences}")
 
         self._sum_rewards = 0
         self._sum_modified_rewards = 0

@@ -23,7 +23,7 @@ class RewardShapingWrapper(gym.Wrapper):
         unmodified_reward = reward
         reward = reward - self._last_fi_value + self._gamma * fi_value
 
-        assert unmodified_reward <= reward, f"Modified reward is higher than unmodified: unmodified={unmodified_reward}, modified={reward}, last fi(x)={self._last_fi_value}, fi(x) = {fi_value}"
+        assert unmodified_reward >= reward, f"Modified reward is higher than unmodified: unmodified={unmodified_reward}, modified={reward}, last fi(x)={self._last_fi_value}, fi(x) = {fi_value}"
 
         self._last_fi_value = fi_value
 

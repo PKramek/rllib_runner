@@ -21,17 +21,19 @@ class RewardShapingEnvironmentCreator:
         self._fi = fi
         self._fi_t0 = fi_t0
 
-        logger.info("RewardShapingEnvironmentCreator created")
-
     def _build_env(self):
         env = gym.make(self._environment_name)
         wrapped_env = RewardShapingWrapper(env, self._gamma, self._fi, self._fi_t0)
 
+        print("Inside RewardShapingEnvironmentCreator _build_env")
+        print(f"Stack: {inspect.stack()}")
+        print(f"Current frame: {inspect.currentframe()}")
+
         return wrapped_env
 
     def __call__(self, *args, **kwargs):
-        logger.info("Inside RewardShapingEnvironmentCreator __call__")
-        logger.info(f"Stack: {inspect.stack()}")
-        logger.info(f"Current frame: {inspect.currentframe()}")
+        print("Inside RewardShapingEnvironmentCreator __call__")
+        print(f"Stack: {inspect.stack()}")
+        print(f"Current frame: {inspect.currentframe()}")
 
         return self._build_env()

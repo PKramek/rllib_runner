@@ -1,4 +1,5 @@
 import inspect
+from pprint import pprint
 
 import gym
 
@@ -19,33 +20,16 @@ class RewardShapingWrapper(gym.Wrapper):
         self._gamma = gamma
         self._last_fi_value = fi_t0
 
-        self._sum_rewards = 0
-        self._sum_modified_rewards = 0
-
-        self._payments = []
-        self._modified_payments = []
-
     def step(self, action):
         next_state, reward, done, info = self.env.step(action)
-        unmodified_reward = reward
         fi_value = self._fi(next_state)
         reward = reward - self._last_fi_value + self._gamma * fi_value
-
-        self._sum_rewards += unmodified_reward
-        self._sum_modified_rewards += reward
 
         self._last_fi_value = fi_value
 
         return next_state, reward, done, info
 
     def reset(self, **kwargs):
-        self._payments.append(self._sum_rewards)
-        self._modified_payments.append(self._sum_modified_rewards)
         print("Inside RewardShapingWrapper reset")
-        print(f"Stack: {inspect.stack()}")
-        print(f"Payments track: {self._payments}")
-        print(f"Modified payments track: {self._modified_payments}")
-
-        self._sum_rewards = 0
-        self._sum_modified_rewards = 0
+        pprint(f"Stack: {inspect.stack()}")
         return self.env.reset(**kwargs)

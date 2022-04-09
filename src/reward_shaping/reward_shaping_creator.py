@@ -8,6 +8,7 @@ from src.reward_shaping.wrapper import RewardShapingWrapper
 
 logger = logging.getLogger(Constants.LOGGER_NAME)
 
+
 class RewardShapingEnvironmentCreator:
     def __init__(self, env: str, gamma: float, fi: callable, fi_t0: float):
         assert isinstance(env, str), "Environment parameter must be a string"
@@ -19,6 +20,8 @@ class RewardShapingEnvironmentCreator:
         self._gamma = gamma
         self._fi = fi
         self._fi_t0 = fi_t0
+
+        logger.info("RewardShapingEnvironmentCreator created")
 
     def _build_env(self):
         env = gym.make(self._environment_name)

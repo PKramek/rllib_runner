@@ -20,6 +20,8 @@ class RewardShapingWrapper(gym.Wrapper):
         self._gamma = gamma
         self._last_fi_value = fi_t0
 
+        self._reset_stack_printed = False
+
     def step(self, action):
         next_state, reward, done, info = self.env.step(action)
         fi_value = self._fi(next_state)
@@ -30,6 +32,10 @@ class RewardShapingWrapper(gym.Wrapper):
         return next_state, reward, done, info
 
     def reset(self, **kwargs):
-        print("Inside RewardShapingWrapper reset")
-        pprint(f"Stack: {inspect.stack()}")
+        if not self._reset_stack_printed:
+            print("Inside RewardShapingWrapper reset")
+            pprint(f"Stack: {inspect.stack()}")
+
+            self._reset_stack_printed = True
+
         return self.env.reset(**kwargs)

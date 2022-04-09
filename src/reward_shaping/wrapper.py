@@ -1,3 +1,4 @@
+import inspect
 import logging
 
 import gym
@@ -19,11 +20,28 @@ class RewardShapingWrapper(gym.Wrapper):
         self._gamma = gamma
         self._last_fi_value = fi_t0
 
+        self._sum_rewards = 0
+        self._sum_modified_rewards = 0
+
     def step(self, action):
         next_state, reward, done, info = self.env.step(action)
+        unmodified_reward = reward
         fi_value = self._fi(next_state)
         reward = reward - self._last_fi_value + self._gamma * fi_value
+
+        self._sum_rewards += unmodified_reward
+        self._sum_modified_rewards += reward
 
         self._last_fi_value = fi_value
 
         return next_state, reward, done, info
+
+    def reset(self, **kwargs):
+        logging.info("Inside RewardShapingWrapper reset")
+        logging.info(f"Stack: {inspect.stack()}")
+        logging.info(
+            f"Sum of rewards = {self._sum_rewards:.2f}, Sum of modified rewards = {self._sum_modified_rewards:.2f}")
+
+        self._sum_rewards = 0
+        self._sum_modified_rewards = 0
+        return self.env.reset(**kwargs)

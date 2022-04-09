@@ -28,8 +28,6 @@ class RewardShapingEnvironmentCreator:
         return wrapped_env
 
     def __call__(self, *args, **kwargs):
-        print("Inside RewardShapingEnvironmentCreator __call__")
-        print(f"Stack: {inspect.stack()}")
-        print(f"Current frame: {inspect.currentframe()}")
+        print(f"Inside RewardShapingEnvironmentCreator __call__, stack: {inspect.stack()}")
 
         return self._build_env()

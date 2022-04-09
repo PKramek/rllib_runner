@@ -1,5 +1,4 @@
 import inspect
-from pprint import pprint
 
 import gym
 
@@ -33,9 +32,7 @@ class RewardShapingWrapper(gym.Wrapper):
 
     def reset(self, **kwargs):
         if not self._reset_stack_printed:
-            print("Inside RewardShapingWrapper reset")
-            pprint(f"Stack: {inspect.stack()}")
-
+            print(f"Inside RewardShapingWrapper reset, stack: {inspect.stack()}")
             self._reset_stack_printed = True
 
         return self.env.reset(**kwargs)

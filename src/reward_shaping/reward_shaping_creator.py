@@ -1,3 +1,6 @@
+import inspect
+import logging
+
 import gym
 
 from src.reward_shaping.wrapper import RewardShapingWrapper
@@ -22,4 +25,8 @@ class RewardShapingEnvironmentCreator:
         return wrapped_env
 
     def __call__(self, *args, **kwargs):
+        logging.info("Inside RewardShapingEnvironmentCreator __call__")
+        logging.info(f"Stack: {inspect.stack()}")
+        logging.info(f"Current frame: {inspect.currentframe()}")
+
         return self._build_env()

@@ -22,12 +22,7 @@ class RewardShapingWrapper(gym.Wrapper):
     def step(self, action):
         next_state, reward, done, info = self.env.step(action)
         fi_value = self._fi(next_state)
-        unmodified_reward = reward
         reward = reward - self._last_fi_value + self._gamma * fi_value
-
-        if unmodified_reward >= reward:
-            logging.warning(
-                f"Modified reward is higher than unmodified: unmodified={unmodified_reward}, modified={reward}, last fi(x)={self._last_fi_value}, fi(x) = {fi_value}")
 
         self._last_fi_value = fi_value
 

@@ -1,5 +1,6 @@
 import inspect
 import logging
+from random import random
 
 import gym
 
@@ -28,6 +29,10 @@ class RewardShapingEnvironmentCreator:
         return wrapped_env
 
     def __call__(self, *args, **kwargs):
-        print(f"Inside RewardShapingEnvironmentCreator __call__, stack: {inspect.stack()}")
+        random_id = random.randint(100, 200)
+        stack = inspect.stack()
+        print(f"Inside RewardShapingEnvironmentCreator with id {random_id}, num of elements on stack: {len(stack)}")
+        for ele in stack:
+            print(f"ID({random_id}) - type: {type(ele)} - value: {ele}")
 
         return self._build_env()

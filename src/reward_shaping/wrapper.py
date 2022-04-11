@@ -1,6 +1,3 @@
-import inspect
-import random
-
 import gym
 
 
@@ -20,8 +17,6 @@ class RewardShapingWrapper(gym.Wrapper):
         self._gamma = gamma
         self._last_fi_value = fi_t0
 
-        self._reset_stack_printed = False
-
     def step(self, action):
         next_state, reward, done, info = self.env.step(action)
         fi_value = self._fi(next_state)
@@ -30,3 +25,17 @@ class RewardShapingWrapper(gym.Wrapper):
         self._last_fi_value = fi_value
 
         return next_state, reward, done, info
+
+
+class ClippedRewardShapingWrapper(RewardShapingWrapper):
+    def step(self, action):
+        next_state, reward, done, info = self.env.step(action)
+        fi_value = self._fi(next_state)
+        modified_reward = reward - self._last_fi_value + self._gamma * fi_value
+
+        if modified_reward > reward:
+            modified_reward = reward
+
+        self._last_fi_value = fi_value
+
+        return next_state, modified_reward, done, info

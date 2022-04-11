@@ -8,7 +8,8 @@ from src.algorithms import AlgorithmFactory
 from src.args_parser import parser
 from src.constants import Constants
 from src.reward_shaping.fi import FiFactory
-from src.reward_shaping.reward_shaping_creator import RewardShapingEnvironmentCreator
+from src.reward_shaping.reward_shaping_creator import RewardShapingEnvironmentCreator, \
+    RewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator
 from src.util import trial_name_generator, trial_dirname_creator, create_and_save_evaluation_results_file, setup_logger, \
     add_tune_specific_config_fields, get_max_memory_size
 
@@ -17,6 +18,7 @@ if __name__ == "__main__":
     logger = setup_logger(Constants.LOGGER_NAME)
     args = vars(parser.parse_args())
     base_environment = "Humanoid-v2"
+    eval_environment = base_environment
 
     logger.info("Registering new environments...")
 
@@ -33,6 +35,22 @@ if __name__ == "__main__":
         logger.info(f"Registering environment: {env_name}, base environment: {base_environment}")
 
     logger.info("Reward shaping environments registered.")
+
+    for fi_name in test_fi_names:
+        fi_x = FiFactory.get_fi(fi_name)
+        environment_with_reward_shaping_and_different_eval_env = RewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator(
+            base_environment, args["gamma"],
+            fi_x,
+            fi_x([1.4, 0, 0, 0, 0, 0, 0, 0]),
+            eval_environment
+        )
+
+        env_name = f"{fi_name}WithDifferentEvaluationRewardShapingHumanoid-v2"
+        register_env(env_name, environment_with_reward_shaping_and_different_eval_env)
+        logger.info(
+            f"Registering environment: {env_name}, base environment: {base_environment}, eval environment: {eval_environment}")
+
+    logger.info("Reward shaping environments with different evaluation environment registered.")
 
     algorithm_name = args.pop('algo')
     max_timesteps = args.pop('max_timesteps')

@@ -58,14 +58,17 @@ class RewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator(RewardSh
     def __call__(self, *args, **kwargs):
         # DON'T USE THAT IN PRODUCTION CODE, IT IS A TERRIBLE CODE PRACTICE!!!!
         stack = inspect.stack()
+        stack_len = len(stack)
 
         # This if statement checks where this function is called from, if it is called for creation of evaluation
         # environment, stack size is 16. This value was obtained by debugging.
-        if len(stack) == 16:
+        if stack_len == 16:
             print("Building evaluation environment...")
             env = self._build_eval_env()
-        else:
+        elif stack_len == 6:
             print("Building training environment...")
             env = self._build_env()
+        else:
+            raise RuntimeError(f"Unsupported case: Stack has length {stack_len}, supported cases include 6 and 16")
 
         return env

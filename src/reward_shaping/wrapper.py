@@ -1,4 +1,5 @@
 import inspect
+import random
 
 import gym
 
@@ -31,8 +32,14 @@ class RewardShapingWrapper(gym.Wrapper):
         return next_state, reward, done, info
 
     def reset(self, **kwargs):
+
         if not self._reset_stack_printed:
-            print(f"Inside RewardShapingWrapper reset, stack: {inspect.stack()}")
+            random_id = random.randint(100, 200)
+            stack = inspect.stack()
+            print(f"Inside RewardShapingWrapper with id {random_id}, num of elements on stack: {len(stack)}")
+            for ele in stack:
+                print(f"ID({random_id}) - type: {type(ele)} - value: {ele}")
+
             self._reset_stack_printed = True
 
         return self.env.reset(**kwargs)

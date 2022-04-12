@@ -51,3 +51,8 @@ class Constants:
     ENV_EVALUATION_RESULTS_DIR_PATH = 'EVALUATION_RESULTS_FILE_PATH'
     LOGS_DIRECTORY = '/tensorboard_logs'
     LOGGER_NAME = 'rllib_runner_logger'
+
+    # Indexes for values in Humanoid-v2 state vector
+    HEIGHT_INDEX = 0
+    TILT_INDEX = 3  # In qpos its under index 5, but observation cuts first two elements
+    X_AXIS_ROTATION_INDEX = 4  # In qpos its under index 6, but observation cuts first two elements

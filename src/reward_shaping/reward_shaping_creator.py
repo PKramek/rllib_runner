@@ -74,7 +74,8 @@ class RewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator(RewardSh
         return env
 
 
-class ClippedRewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator(RewardShapingEnvironmentCreator):
+class ClippedRewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator(
+    RewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator):
     def _build_env(self):
         env = gym.make(self._environment_name)
         wrapped_env = ClippedRewardShapingWrapper(env, self._gamma, self._fi, self._fi_t0)

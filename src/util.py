@@ -70,6 +70,9 @@ def trial_name_generator(trial: tune.trial.Trial) -> str:
     eval_results_dir = f"{logs_dir}/{trial.trainable_name}/{trial_name}"
 
     rllib_runner_logger.warning(
+        f"Setting trial name to: {trial_name}")
+
+    rllib_runner_logger.warning(
         f"Setting {Constants.ENV_EVALUATION_RESULTS_DIR_PATH} env variable to: {eval_results_dir}")
     os.environ[Constants.ENV_EVALUATION_RESULTS_DIR_PATH] = eval_results_dir
 

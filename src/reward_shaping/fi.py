@@ -60,6 +60,24 @@ class HumanoidHeightLinearHigherPenalty(Fi):
         return 0.0 if 1.35 < state[index] < 1.45 else -np.abs((1.4 - state[index]) * 50)
 
 
+class HumanoidHeightLinearShiftedDown(HumanoidHeightLinear):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi - 1
+
+
+class HumanoidHeightLinearLowerPenaltyShiftedDown(HumanoidHeightLinearLowerPenalty):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi - 1
+
+
+class HumanoidHeightLinearHigherPenaltyShiftedDown(HumanoidHeightLinearHigherPenalty):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi - 1
+
+
 class HumanoidNarrowFlatTopQuadraticFi(Fi):
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
@@ -214,6 +232,9 @@ class FiFactory:
         'linear': HumanoidHeightLinear,
         'linearLowerPenalty': HumanoidHeightLinearLowerPenalty,
         'linearHigherPenalty': HumanoidHeightLinearHigherPenalty,
+        'linearShiftedDown': HumanoidHeightLinearShiftedDown,
+        'linearLowerPenaltyShiftedDown': HumanoidHeightLinearLowerPenaltyShiftedDown,
+        'linearHigherPenaltyShiftedDown': HumanoidHeightLinearHigherPenaltyShiftedDown,
         'quadraticFlatTop': HumanoidFlatTopQuadraticFi,
         'quadraticNarrowFlatTop': HumanoidNarrowFlatTopQuadraticFi,
         'quadraticWideFlatTop': HumanoidWideFlatTopQuadraticFi,

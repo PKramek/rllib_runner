@@ -7,7 +7,7 @@ class RewardShapingWrapper(gym.Wrapper):
     # r`(t) = r(t) - fi(x_t) + gamma * fi(x_(t+1))
 
     def __init__(self, env: str, gamma: float, fi: callable, fi_t0: float):
-        assert isinstance(env, gym.Env), "Environment must be a gym environment"
+        assert hasattr(env, 'step') and hasattr(env, 'reset'), "Environment must have step and reset methods"
         assert isinstance(gamma, float) and 0 < gamma < 1, "Gamma parameter must be a float in range (0,1)"
         assert callable(fi), "Fi must be a callable"
         assert isinstance(fi_t0, float), f"Fi(t0) (passed value = {fi_t0}) must be a float not {type(fi_t0)}"

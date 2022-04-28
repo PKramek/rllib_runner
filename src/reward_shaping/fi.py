@@ -42,6 +42,24 @@ class HumanoidFlatTopQuadraticFi(Fi):
         return 0.0 if 1.35 < state[index] < 1.45 else -np.power((1.4 - state[index]) * 100, 2)
 
 
+class HumanoidHeightLinear(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return 0.0 if 1.35 < state[index] < 1.45 else -np.abs((1.4 - state[index]) * 10)
+
+
+class HumanoidHeightLinearLowerPenalty(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return 0.0 if 1.35 < state[index] < 1.45 else -np.abs((1.4 - state[index]) * 5)
+
+
+class HumanoidHeightLinearHigherPenalty(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return 0.0 if 1.35 < state[index] < 1.45 else -np.abs((1.4 - state[index]) * 50)
+
+
 class HumanoidNarrowFlatTopQuadraticFi(Fi):
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
@@ -193,6 +211,9 @@ class QuadraticHeightWithForwardTilt(Fi):
 
 class FiFactory:
     FI_MAPPING = {
+        'linear': HumanoidHeightLinear,
+        'linearLowerPenalty': HumanoidHeightLinearLowerPenalty,
+        'linearHigherPenalty': HumanoidHeightLinearHigherPenalty,
         'quadraticFlatTop': HumanoidFlatTopQuadraticFi,
         'quadraticNarrowFlatTop': HumanoidNarrowFlatTopQuadraticFi,
         'quadraticWideFlatTop': HumanoidWideFlatTopQuadraticFi,
@@ -207,7 +228,8 @@ class FiFactory:
         'quadraticWideFlatTopWithBodyTiltWide': HumanoidWideFlatTopQuadraticWithBodyTiltWide,
         'quadraticWideFlatTopWithForwardBodyTiltAndCorrectPenalty': HumanoidWideFlatTopQuadraticWithCorrectBodyTiltPenaltyFi,
         'quadratic': QuadraticHeight,
-        'quadraticWithBodyTilt': QuadraticHeightWithForwardTilt
+        'quadraticWithBodyTilt': QuadraticHeightWithForwardTilt,
+
     }
 
     @staticmethod

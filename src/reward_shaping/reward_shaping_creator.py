@@ -72,12 +72,3 @@ class RewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator(RewardSh
             raise RuntimeError(f"Unsupported case: Stack has length {stack_len}, supported cases include 6 and 16")
 
         return env
-
-
-class ClippedRewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator(
-    RewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator):
-    def _build_env(self):
-        env = gym.make(self._environment_name)
-        wrapped_env = ClippedRewardShapingWrapper(env, self._gamma, self._fi, self._fi_t0)
-
-        return wrapped_env

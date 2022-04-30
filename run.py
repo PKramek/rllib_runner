@@ -12,6 +12,7 @@ from src.reward_shaping.reward_shaping_creator import RewardShapingEnvironmentCr
     RewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator
 from src.util import trial_name_generator, trial_dirname_creator, create_and_save_evaluation_results_file, setup_logger, \
     add_tune_specific_config_fields, get_max_memory_size
+import pybullet_envs
 
 if __name__ == "__main__":
 

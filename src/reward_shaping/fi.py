@@ -54,6 +54,42 @@ class HumanoidHeightLinearHigherPenaltyShiftedDown(HumanoidHeightLinearHigherPen
         return base_fi - 1
 
 
+class HumanoidHeightLinearShiftedUp(HumanoidHeightLinear):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 5
+
+
+class HumanoidHeightLinearShiftedUpSlightly(HumanoidHeightLinear):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 1
+
+
+class HumanoidHeightLinearShiftedUpMassively(HumanoidHeightLinear):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 20
+
+
+class HumanoidHeightLinearHigherPenaltyShiftedUp(HumanoidHeightLinearHigherPenalty):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 5
+
+
+class HumanoidHeightLinearHigherPenaltyShiftedUpSlightly(HumanoidHeightLinearHigherPenalty):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 1
+
+
+class HumanoidHeightLinearHigherPenaltyShiftedUpMassively(HumanoidHeightLinearHigherPenalty):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 20
+
+
 class FiFactory:
     FI_MAPPING = {
         'linear': HumanoidHeightLinear,
@@ -62,6 +98,12 @@ class FiFactory:
         'linearShiftedDown': HumanoidHeightLinearShiftedDown,
         'linearLowerPenaltyShiftedDown': HumanoidHeightLinearLowerPenaltyShiftedDown,
         'linearHigherPenaltyShiftedDown': HumanoidHeightLinearHigherPenaltyShiftedDown,
+        'linearShiftedUp': HumanoidHeightLinearShiftedUp,
+        'linearShiftedUpSlightly': HumanoidHeightLinearShiftedUpSlightly,
+        'linearShiftedUpMassively': HumanoidHeightLinearShiftedUpMassively,
+        'linearHigherPenaltyShiftedUp': HumanoidHeightLinearHigherPenaltyShiftedUp,
+        'linearHigherPenaltyShiftedUpSlightly': HumanoidHeightLinearHigherPenaltyShiftedUpSlightly,
+        'linearHigherPenaltyShiftedUpMassively': HumanoidHeightLinearHigherPenaltyShiftedUpMassively
     }
 
     @staticmethod

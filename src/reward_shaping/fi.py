@@ -152,18 +152,21 @@ class HumanoidHeightLinearShiftedUpExtremallyNotFlat(HumanoidHeightLinearNotFlat
 
 
 class HumanoidHeightNormal(Fi):
+
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
         return 3000 * normal_dist_density(state[index], 1.4, 0.05)  # fi([1.4, ....]) = 475
 
 
 class HumanoidHeightNormalNarrow(Fi):
+
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
         return 15000 * normal_dist_density(state[index], 1.4, 0.01)  # fi([1.4, ....]) = 475
 
 
 class HumanoidHeightNormalWide(Fi):
+
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
         return 300 * normal_dist_density(state[index], 1.4, 0.5)  # fi([1.4, ....]) = 475

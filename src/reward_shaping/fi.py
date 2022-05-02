@@ -4,6 +4,7 @@ from typing import Type
 import numpy as np
 
 from src.constants import Constants
+from src.reward_shaping.util import normal_dist_density
 
 
 class Fi(ABC):
@@ -72,6 +73,18 @@ class HumanoidHeightLinearShiftedUpMassively(HumanoidHeightLinear):
         return base_fi + 20
 
 
+class HumanoidHeightLinearShiftedUpExcessively(HumanoidHeightLinear):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 300
+
+
+class HumanoidHeightLinearShiftedUpExtremally(HumanoidHeightLinear):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 500
+
+
 class HumanoidHeightLinearHigherPenaltyShiftedUp(HumanoidHeightLinearHigherPenalty):
     def __call__(self, state):
         base_fi = super().__call__(state)
@@ -90,6 +103,72 @@ class HumanoidHeightLinearHigherPenaltyShiftedUpMassively(HumanoidHeightLinearHi
         return base_fi + 20
 
 
+class HumanoidHeightLinearNotFlat(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return -np.abs((1.4 - state[index]) * 10)
+
+
+class HumanoidHeightLinearLowerPenaltyNotFlat(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return -np.abs((1.4 - state[index]) * 5)
+
+
+class HumanoidHeightLinearHigherPenaltyNotFlat(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return -np.abs((1.4 - state[index]) * 50)
+
+
+class HumanoidHeightLinearShiftedUpNotFlat(HumanoidHeightLinearNotFlat):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 5
+
+
+class HumanoidHeightLinearShiftedUpSlightlyNotFlat(HumanoidHeightLinearNotFlat):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 1
+
+
+class HumanoidHeightLinearShiftedUpMassivelyNotFlat(HumanoidHeightLinearNotFlat):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 20
+
+
+class HumanoidHeightLinearShiftedUpExcessivelyNotFlat(HumanoidHeightLinearNotFlat):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 300
+
+
+class HumanoidHeightLinearShiftedUpExtremallyNotFlat(HumanoidHeightLinearNotFlat):
+    def __call__(self, state):
+        base_fi = super().__call__(state)
+        return base_fi + 500
+
+
+class HumanoidHeightNormal(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return 3000 * normal_dist_density(state[index], 1.4, 0.05)  # fi([1.4, ....]) = 475
+
+
+class HumanoidHeightNormalNarrow(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return 15000 * normal_dist_density(state[index], 1.4, 0.01)  # fi([1.4, ....]) = 475
+
+
+class HumanoidHeightNormalWide(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return 300 * normal_dist_density(state[index], 1.4, 0.5)  # fi([1.4, ....]) = 475
+
+
 class FiFactory:
     FI_MAPPING = {
         'linear': HumanoidHeightLinear,
@@ -98,12 +177,28 @@ class FiFactory:
         'linearShiftedDown': HumanoidHeightLinearShiftedDown,
         'linearLowerPenaltyShiftedDown': HumanoidHeightLinearLowerPenaltyShiftedDown,
         'linearHigherPenaltyShiftedDown': HumanoidHeightLinearHigherPenaltyShiftedDown,
+
         'linearShiftedUp': HumanoidHeightLinearShiftedUp,
         'linearShiftedUpSlightly': HumanoidHeightLinearShiftedUpSlightly,
         'linearShiftedUpMassively': HumanoidHeightLinearShiftedUpMassively,
         'linearHigherPenaltyShiftedUp': HumanoidHeightLinearHigherPenaltyShiftedUp,
         'linearHigherPenaltyShiftedUpSlightly': HumanoidHeightLinearHigherPenaltyShiftedUpSlightly,
-        'linearHigherPenaltyShiftedUpMassively': HumanoidHeightLinearHigherPenaltyShiftedUpMassively
+        'linearHigherPenaltyShiftedUpMassively': HumanoidHeightLinearHigherPenaltyShiftedUpMassively,
+        'linearShiftedUpExcessively': HumanoidHeightLinearShiftedUpExcessively,
+        'linearShiftedUpExtremally': HumanoidHeightLinearShiftedUpExtremally,
+
+        'linearNotFlat': HumanoidHeightLinearNotFlat,
+        'linearLowerPenaltyNotFlat': HumanoidHeightLinearLowerPenaltyNotFlat,
+        'linearHigherPenaltyNotFlat': HumanoidHeightLinearHigherPenaltyNotFlat,
+        'linearShiftedUpNotFlat': HumanoidHeightLinearShiftedUpNotFlat,
+        'linearShiftedUpSlightlyNotFlat': HumanoidHeightLinearShiftedUpSlightlyNotFlat,
+        'linearShiftedUpMassivelyNotFlat': HumanoidHeightLinearShiftedUpMassivelyNotFlat,
+        'linearShiftedUpExcessivelyNotFlat': HumanoidHeightLinearShiftedUpExcessivelyNotFlat,
+        'linearShiftedUpExtremallyNotFlat': HumanoidHeightLinearShiftedUpExtremallyNotFlat,
+
+        'normal': HumanoidHeightNormal,
+        'normalNarrow': HumanoidHeightNormalNarrow,
+        'normalWide': HumanoidHeightNormalWide,
     }
 
     @staticmethod

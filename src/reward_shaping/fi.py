@@ -172,6 +172,13 @@ class HumanoidHeightNormalWide(Fi):
         return 300 * normal_dist_density(state[index], 1.4, 0.5)  # fi([1.4, ....]) = 475
 
 
+class HumanoidHeightNormalLowPenaltyShiftedExtremally(Fi):
+
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (10 * normal_dist_density(state[index], 1.4, 0.05)) + 500
+
+
 class FiFactory:
     FI_MAPPING = {
         'linear': HumanoidHeightLinear,
@@ -202,6 +209,7 @@ class FiFactory:
         'normal': HumanoidHeightNormal,
         'normalNarrow': HumanoidHeightNormalNarrow,
         'normalWide': HumanoidHeightNormalWide,
+        'normalSmallSHiftedExtremally': HumanoidHeightNormalLowPenaltyShiftedExtremally
     }
 
     @staticmethod

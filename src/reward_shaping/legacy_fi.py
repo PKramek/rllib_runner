@@ -1,7 +1,7 @@
 import numpy as np
 
 from src.constants import Constants
-from src.reward_shaping.fi import Fi
+from src.reward_shaping.fi_base import Fi
 
 
 class HumanoidFi(Fi):

@@ -1,16 +1,13 @@
-from abc import ABC, abstractmethod
 from typing import Type
 
 import numpy as np
 
+import normal_shifted_four_hundred
+import normal_shifted_one_hundred
+import normal_shifted_seven_hundred
 from src.constants import Constants
+from src.reward_shaping.fi_base import Fi
 from src.reward_shaping.util import normal_dist_density
-
-
-class Fi(ABC):
-    @abstractmethod
-    def __call__(self, state):
-        pass
 
 
 # This class is just an example and is not useful in any way
@@ -174,6 +171,59 @@ class FiFactory:
         'normalHighShiftedUpExtremely': HumanoidHeightNormalHighPenaltyShiftedExtremely,
         'normalHighWideShiftedUpExtremely': HumanoidHeightNormalWideHighPenaltyShiftedExtremely,
         'normalHighNarrowShiftedUpExtremely': HumanoidHeightNormalNarrowHighPenaltyShiftedExtremely,
+
+        ################################################################################################################
+        'normalSmallShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalSmallPenaltyShiftedFourHundred,
+        'normalSmallWideShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalWideSmallPenaltyShiftedFourHundred,
+        'normalSmallNarrowShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalNarrowSmallPenaltyShiftedFourHundred,
+
+        'normalLowShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalLowPenaltyShiftedFourHundred,
+        'normalLowWideShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalWideLowPenaltyShiftedFourHundred,
+        'normalLowNarrowShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalNarrowLowPenaltyShiftedFourHundred,
+
+        'normalStandardShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalStandardPenaltyShiftedFourHundred,
+        'normalStandardWideShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalWideStandardPenaltyShiftedFourHundred,
+        'normalStandardNarrowShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalNarrowStandardPenaltyShiftedFourHundred,
+
+        'normalHighShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalHighPenaltyShiftedFourHundred,
+        'normalHighWideShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalWideHighPenaltyShiftedFourHundred,
+        'normalHighNarrowShiftedUpFourHundred': normal_shifted_four_hundred.HumanoidHeightNormalNarrowHighPenaltyShiftedFourHundred,
+
+        ################################################################################################################
+        'normalSmallShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalSmallPenaltyShiftedSevenHundred,
+        'normalSmallWideShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalWideSmallPenaltyShiftedSevenHundred,
+        'normalSmallNarrowShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalNarrowSmallPenaltyShiftedSevenHundred,
+
+        'normalLowShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalLowPenaltyShiftedSevenHundred,
+        'normalLowWideShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalWideLowPenaltyShiftedSevenHundred,
+        'normalLowNarrowShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalNarrowLowPenaltyShiftedSevenHundred,
+
+        'normalStandardShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalStandardPenaltyShiftedSevenHundred,
+        'normalStandardWideShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalWideStandardPenaltyShiftedSevenHundred,
+        'normalStandardNarrowShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalNarrowStandardPenaltyShiftedSevenHundred,
+
+        'normalHighShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalHighPenaltyShiftedSevenHundred,
+        'normalHighWideShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalWideHighPenaltyShiftedSevenHundred,
+        'normalHighNarrowShiftedUpSevenHundred': normal_shifted_seven_hundred.HumanoidHeightNormalNarrowHighPenaltyShiftedSevenHundred,
+
+        ################################################################################################################
+
+        'normalSmallShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalSmallPenaltyShiftedOneHundred,
+        'normalSmallWideShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalWideSmallPenaltyShiftedOneHundred,
+        'normalSmallNarrowShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalNarrowSmallPenaltyShiftedOneHundred,
+
+        'normalLowShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalLowPenaltyShiftedOneHundred,
+        'normalLowWideShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalWideLowPenaltyShiftedOneHundred,
+        'normalLowNarrowShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalNarrowLowPenaltyShiftedOneHundred,
+
+        'normalStandardShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalStandardPenaltyShiftedOneHundred,
+        'normalStandardWideShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalWideStandardPenaltyShiftedOneHundred,
+        'normalStandardNarrowShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalNarrowStandardPenaltyShiftedOneHundred,
+
+        'normalHighShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalHighPenaltyShiftedOneHundred,
+        'normalHighWideShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalWideHighPenaltyShiftedOneHundred,
+        'normalHighNarrowShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalNarrowHighPenaltyShiftedOneHundred,
+
     }
 
     @staticmethod

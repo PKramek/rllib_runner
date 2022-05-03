@@ -19,90 +19,6 @@ class SumFi(Fi):
         return np.sum(state)
 
 
-class HumanoidHeightLinear(Fi):
-    def __call__(self, state):
-        index = Constants.HEIGHT_INDEX
-        return 0.0 if 1.35 < state[index] < 1.45 else -np.abs((1.4 - state[index]) * 10)
-
-
-class HumanoidHeightLinearLowerPenalty(Fi):
-    def __call__(self, state):
-        index = Constants.HEIGHT_INDEX
-        return 0.0 if 1.35 < state[index] < 1.45 else -np.abs((1.4 - state[index]) * 5)
-
-
-class HumanoidHeightLinearHigherPenalty(Fi):
-    def __call__(self, state):
-        index = Constants.HEIGHT_INDEX
-        return 0.0 if 1.35 < state[index] < 1.45 else -np.abs((1.4 - state[index]) * 50)
-
-
-class HumanoidHeightLinearShiftedDown(HumanoidHeightLinear):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi - 1
-
-
-class HumanoidHeightLinearLowerPenaltyShiftedDown(HumanoidHeightLinearLowerPenalty):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi - 1
-
-
-class HumanoidHeightLinearHigherPenaltyShiftedDown(HumanoidHeightLinearHigherPenalty):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi - 1
-
-
-class HumanoidHeightLinearShiftedUp(HumanoidHeightLinear):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi + 5
-
-
-class HumanoidHeightLinearShiftedUpSlightly(HumanoidHeightLinear):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi + 1
-
-
-class HumanoidHeightLinearShiftedUpMassively(HumanoidHeightLinear):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi + 20
-
-
-class HumanoidHeightLinearShiftedUpExcessively(HumanoidHeightLinear):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi + 300
-
-
-class HumanoidHeightLinearShiftedUpExtremally(HumanoidHeightLinear):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi + 500
-
-
-class HumanoidHeightLinearHigherPenaltyShiftedUp(HumanoidHeightLinearHigherPenalty):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi + 5
-
-
-class HumanoidHeightLinearHigherPenaltyShiftedUpSlightly(HumanoidHeightLinearHigherPenalty):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi + 1
-
-
-class HumanoidHeightLinearHigherPenaltyShiftedUpMassively(HumanoidHeightLinearHigherPenalty):
-    def __call__(self, state):
-        base_fi = super().__call__(state)
-        return base_fi + 20
-
-
 class HumanoidHeightLinearNotFlat(Fi):
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
@@ -145,58 +61,93 @@ class HumanoidHeightLinearShiftedUpExcessivelyNotFlat(HumanoidHeightLinearNotFla
         return base_fi + 300
 
 
-class HumanoidHeightLinearShiftedUpExtremallyNotFlat(HumanoidHeightLinearNotFlat):
+class HumanoidHeightLinearShiftedUpExtremelyNotFlat(HumanoidHeightLinearNotFlat):
     def __call__(self, state):
         base_fi = super().__call__(state)
         return base_fi + 500
 
 
-class HumanoidHeightNormal(Fi):
-
+############################ SMALL ############################
+class HumanoidHeightNormalSmallPenaltyShiftedExtremely(Fi):
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
-        return 3000 * normal_dist_density(state[index], 1.4, 0.05)  # fi([1.4, ....]) = 475
+        return (5 * normal_dist_density(state[index], 1.4, 0.05)) + 500
 
 
-class HumanoidHeightNormalNarrow(Fi):
-
+class HumanoidHeightNormalNarrowSmallPenaltyShiftedExtremely(Fi):
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
-        return 15000 * normal_dist_density(state[index], 1.4, 0.01)  # fi([1.4, ....]) = 475
+        return (25 * normal_dist_density(state[index], 1.4, 0.01)) + 500
 
 
-class HumanoidHeightNormalWide(Fi):
-
+class HumanoidHeightNormalWideSmallPenaltyShiftedExtremely(Fi):
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
-        return 300 * normal_dist_density(state[index], 1.4, 0.5)  # fi([1.4, ....]) = 475
+        return (2.5 * normal_dist_density(state[index], 1.4, 0.1)) + 500
 
 
-class HumanoidHeightNormalLowPenaltyShiftedExtremally(Fi):
-
+############################ LOW  ############################
+class HumanoidHeightNormalLowPenaltyShiftedExtremely(Fi):
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
         return (10 * normal_dist_density(state[index], 1.4, 0.05)) + 500
 
 
+class HumanoidHeightNormalNarrowLowPenaltyShiftedExtremely(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (50 * normal_dist_density(state[index], 1.4, 0.01)) + 500
+
+
+class HumanoidHeightNormalWideLowPenaltyShiftedExtremely(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (5 * normal_dist_density(state[index], 1.4, 0.1)) + 500
+
+
+############################ STANDARD ############################
+
+class HumanoidHeightNormalStandardPenaltyShiftedExtremely(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (30 * normal_dist_density(state[index], 1.4, 0.05)) + 500
+
+
+class HumanoidHeightNormalNarrowStandardPenaltyShiftedExtremely(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (150 * normal_dist_density(state[index], 1.4, 0.01)) + 500
+
+
+class HumanoidHeightNormalWideStandardPenaltyShiftedExtremely(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (15 * normal_dist_density(state[index], 1.4, 0.1)) + 500
+
+
+############################ HIGH ############################
+
+
+class HumanoidHeightNormalHighPenaltyShiftedExtremely(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (60 * normal_dist_density(state[index], 1.4, 0.05)) + 500
+
+
+class HumanoidHeightNormalNarrowHighPenaltyShiftedExtremely(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (300 * normal_dist_density(state[index], 1.4, 0.01)) + 500
+
+
+class HumanoidHeightNormalWideHighPenaltyShiftedExtremely(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (30 * normal_dist_density(state[index], 1.4, 0.1)) + 500
+
+
 class FiFactory:
     FI_MAPPING = {
-        'linear': HumanoidHeightLinear,
-        'linearLowerPenalty': HumanoidHeightLinearLowerPenalty,
-        'linearHigherPenalty': HumanoidHeightLinearHigherPenalty,
-        'linearShiftedDown': HumanoidHeightLinearShiftedDown,
-        'linearLowerPenaltyShiftedDown': HumanoidHeightLinearLowerPenaltyShiftedDown,
-        'linearHigherPenaltyShiftedDown': HumanoidHeightLinearHigherPenaltyShiftedDown,
-
-        'linearShiftedUp': HumanoidHeightLinearShiftedUp,
-        'linearShiftedUpSlightly': HumanoidHeightLinearShiftedUpSlightly,
-        'linearShiftedUpMassively': HumanoidHeightLinearShiftedUpMassively,
-        'linearHigherPenaltyShiftedUp': HumanoidHeightLinearHigherPenaltyShiftedUp,
-        'linearHigherPenaltyShiftedUpSlightly': HumanoidHeightLinearHigherPenaltyShiftedUpSlightly,
-        'linearHigherPenaltyShiftedUpMassively': HumanoidHeightLinearHigherPenaltyShiftedUpMassively,
-        'linearShiftedUpExcessively': HumanoidHeightLinearShiftedUpExcessively,
-        'linearShiftedUpExtremally': HumanoidHeightLinearShiftedUpExtremally,
-
         'linearNotFlat': HumanoidHeightLinearNotFlat,
         'linearLowerPenaltyNotFlat': HumanoidHeightLinearLowerPenaltyNotFlat,
         'linearHigherPenaltyNotFlat': HumanoidHeightLinearHigherPenaltyNotFlat,
@@ -204,12 +155,25 @@ class FiFactory:
         'linearShiftedUpSlightlyNotFlat': HumanoidHeightLinearShiftedUpSlightlyNotFlat,
         'linearShiftedUpMassivelyNotFlat': HumanoidHeightLinearShiftedUpMassivelyNotFlat,
         'linearShiftedUpExcessivelyNotFlat': HumanoidHeightLinearShiftedUpExcessivelyNotFlat,
-        'linearShiftedUpExtremallyNotFlat': HumanoidHeightLinearShiftedUpExtremallyNotFlat,
+        'linearShiftedUpExtremallyNotFlat': HumanoidHeightLinearShiftedUpExtremelyNotFlat,
 
-        'normal': HumanoidHeightNormal,
-        'normalNarrow': HumanoidHeightNormalNarrow,
-        'normalWide': HumanoidHeightNormalWide,
-        'normalSmallSHiftedExtremally': HumanoidHeightNormalLowPenaltyShiftedExtremally
+        'normalSmallSHiftedExtremally': HumanoidHeightNormalLowPenaltyShiftedExtremely,  # left here for db reference
+
+        'normalSmallShiftedUpExtremely': HumanoidHeightNormalSmallPenaltyShiftedExtremely,
+        'normalSmallWideShiftedUpExtremely': HumanoidHeightNormalWideSmallPenaltyShiftedExtremely,
+        'normalSmallNarrowShiftedUpExtremely': HumanoidHeightNormalNarrowSmallPenaltyShiftedExtremely,
+
+        'normalLowShiftedUpExtremely': HumanoidHeightNormalLowPenaltyShiftedExtremely,
+        'normalLowWideShiftedUpExtremely': HumanoidHeightNormalWideLowPenaltyShiftedExtremely,
+        'normalLowNarrowShiftedUpExtremely': HumanoidHeightNormalNarrowLowPenaltyShiftedExtremely,
+
+        'normalStandardShiftedUpExtremely': HumanoidHeightNormalStandardPenaltyShiftedExtremely,
+        'normalStandardWideShiftedUpExtremely': HumanoidHeightNormalWideStandardPenaltyShiftedExtremely,
+        'normalStandardNarrowShiftedUpExtremely': HumanoidHeightNormalNarrowStandardPenaltyShiftedExtremely,
+
+        'normalHighShiftedUpExtremely': HumanoidHeightNormalHighPenaltyShiftedExtremely,
+        'normalHighWideShiftedUpExtremely': HumanoidHeightNormalWideHighPenaltyShiftedExtremely,
+        'normalHighNarrowShiftedUpExtremely': HumanoidHeightNormalNarrowHighPenaltyShiftedExtremely,
     }
 
     @staticmethod

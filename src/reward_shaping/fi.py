@@ -143,6 +143,24 @@ class HumanoidHeightNormalWideHighPenaltyShiftedExtremely(Fi):
         return (30 * normal_dist_density(state[index], 1.4, 0.1)) + 500
 
 
+class NewHumanoidNormalHeight(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return normal_dist_density(state[index], 1.4, 0.1) * 300
+
+
+class NewHumanoidNormalHeightLowerPenalty(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return normal_dist_density(state[index], 1.4, 0.1) * 100
+
+
+class NewHumanoidNormalHeightHigherPenalty(Fi):
+    def __call__(self, state):
+        index = Constants.HEIGHT_INDEX
+        return normal_dist_density(state[index], 1.4, 0.1) * 500
+
+
 class FiFactory:
     FI_MAPPING = {
         'linearNotFlat': HumanoidHeightLinearNotFlat,
@@ -224,6 +242,9 @@ class FiFactory:
         'normalHighWideShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalWideHighPenaltyShiftedOneHundred,
         'normalHighNarrowShiftedUpOneHundred': normal_shifted_one_hundred.HumanoidHeightNormalNarrowHighPenaltyShiftedOneHundred,
 
+        'newNormal': NewHumanoidNormalHeight,
+        "newNormalHigherPenalty": NewHumanoidNormalHeightHigherPenalty,
+        "newNormalLowerPenalty": NewHumanoidNormalHeightLowerPenalty
     }
 
     @staticmethod

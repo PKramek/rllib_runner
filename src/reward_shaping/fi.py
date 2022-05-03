@@ -2,10 +2,8 @@ from typing import Type
 
 import numpy as np
 
-import normal_shifted_four_hundred
-import normal_shifted_one_hundred
-import normal_shifted_seven_hundred
 from src.constants import Constants
+from src.reward_shaping import normal_shifted_one_hundred, normal_shifted_seven_hundred, normal_shifted_four_hundred
 from src.reward_shaping.fi_base import Fi
 from src.reward_shaping.util import normal_dist_density
 

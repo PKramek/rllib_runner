@@ -5,6 +5,7 @@ import numpy as np
 from src.constants import Constants
 from src.reward_shaping import normal_shifted_one_hundred, normal_shifted_seven_hundred, normal_shifted_four_hundred
 from src.reward_shaping.fi_base import Fi
+from src.reward_shaping.legacy_fi import HumanoidWideFlatTopQuadraticWithBodyTiltLowerPenaltyFi
 from src.reward_shaping.util import normal_dist_density
 
 
@@ -242,7 +243,9 @@ class FiFactory:
 
         'newNormal': NewHumanoidNormalHeight,
         "newNormalHigherPenalty": NewHumanoidNormalHeightHigherPenalty,
-        "newNormalLowerPenalty": NewHumanoidNormalHeightLowerPenalty
+        "newNormalLowerPenalty": NewHumanoidNormalHeightLowerPenalty,
+
+        "quadraticWideFlatTopWithBodyTiltLowerPenalty": HumanoidWideFlatTopQuadraticWithBodyTiltLowerPenaltyFi,
     }
 
     @staticmethod

@@ -160,6 +160,65 @@ class NewHumanoidNormalHeightHigherPenalty(Fi):
         return normal_dist_density(state[index], 1.4, 0.1) * 500
 
 
+################## HumanoidHeightNormalLowPenaltyShiftedExtremely with forward tilt
+
+class HumanoidHeightTiltNormalLowPenaltyShiftedFiveThreeThree:
+
+    def __call__(self, state):
+        return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
+            state)
+
+    def _height_penalty(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (10 * normal_dist_density(state[index], 1.4, 0.05)) + 500
+
+    def _forward_tilt_penalty(self, state):
+        index = Constants.TILT_INDEX
+        return (10 * normal_dist_density(state[index], 0, 0.05)) + 300
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        index = Constants.X_AXIS_ROTATION_INDEX
+        return (10 * normal_dist_density(state[index], 0, 0.05)) + 300
+
+
+class HumanoidHeightTiltNormalLowPenaltyShiftedFiveFourThree:
+
+    def __call__(self, state):
+        return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
+            state)
+
+    def _height_penalty(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (10 * normal_dist_density(state[index], 1.4, 0.05)) + 500
+
+    def _forward_tilt_penalty(self, state):
+        index = Constants.TILT_INDEX
+        return (10 * normal_dist_density(state[index], 0, 0.05)) + 400
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        index = Constants.X_AXIS_ROTATION_INDEX
+        return (10 * normal_dist_density(state[index], 0, 0.05)) + 300
+
+class HumanoidHeightTiltNormalLowPenaltyShiftedFiveThreeTwo:
+
+    def __call__(self, state):
+        return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
+            state)
+
+    def _height_penalty(self, state):
+        index = Constants.HEIGHT_INDEX
+        return (10 * normal_dist_density(state[index], 1.4, 0.05)) + 500
+
+    def _forward_tilt_penalty(self, state):
+        index = Constants.TILT_INDEX
+        return (10 * normal_dist_density(state[index], 0, 0.05)) + 300
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        index = Constants.X_AXIS_ROTATION_INDEX
+        return (10 * normal_dist_density(state[index], 0, 0.05)) + 200
+
+
+
 class FiFactory:
     FI_MAPPING = {
         'linearNotFlat': HumanoidHeightLinearNotFlat,
@@ -246,6 +305,12 @@ class FiFactory:
         "newNormalLowerPenalty": NewHumanoidNormalHeightLowerPenalty,
 
         "quadraticWideFlatTopWithBodyTiltLowerPenalty": HumanoidWideFlatTopQuadraticWithBodyTiltLowerPenaltyFi,
+
+        #####################################
+
+        "normalHeightTiltSmallShiftedFiveThreeThree": HumanoidHeightTiltNormalLowPenaltyShiftedFiveThreeThree,
+        "normalHeightTiltSmallShiftedFiveFourThree": HumanoidHeightTiltNormalLowPenaltyShiftedFiveFourThree,
+        "normalHeightTiltSmallShiftedFiveThreeTwo": HumanoidHeightTiltNormalLowPenaltyShiftedFiveThreeTwo,
     }
 
     @staticmethod

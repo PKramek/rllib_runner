@@ -182,48 +182,37 @@ class AbstractHumanoidHeightTiltNormalLowPenaltyShifted(ABC):
 
     def _height_penalty_without_shift(self, state):
         index = Constants.HEIGHT_INDEX
-        return (10 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05))
+        return 10 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05)
 
     def _forward_tilt_penalty_without_shift(self, state):
         index = Constants.TILT_INDEX
-        return (10 * normal_dist_density(state[index], Constants.TILT_NOMINAL_VALUE, 0.05))
+        return 10 * normal_dist_density(state[index], Constants.TILT_NOMINAL_VALUE, 0.05)
 
     def _x_axis_angle_rotation_penalty_without_shift(self, state):
         index = Constants.X_AXIS_ROTATION_INDEX
-        return (10 * normal_dist_density(state[index], Constants.X_AXIS_ROTATION_NOMINAL_VALUE, 0.05))
+        return 10 * normal_dist_density(state[index], Constants.X_AXIS_ROTATION_NOMINAL_VALUE, 0.05)
 
 
-class HumanoidHeightTiltNormalLowPenaltyShiftedFiveThreeThree(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
+class HumanoidHeightTiltNormalLowPenaltyShiftedFiveNoneNone(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
     def _height_penalty(self, state):
         return self._height_penalty_without_shift(state) + 500
 
     def _forward_tilt_penalty(self, state):
-        return self._forward_tilt_penalty_without_shift(state) + 300
+        return 0
 
     def _x_axis_angle_rotation_penalty(self, state):
-        return self._x_axis_angle_rotation_penalty_without_shift(state) + 300
+        return 0
 
 
-class HumanoidHeightTiltNormalLowPenaltyShiftedFiveOneOne(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
+class HumanoidHeightTiltNormalLowPenaltyShiftedFiveBaseBase(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
     def _height_penalty(self, state):
         return self._height_penalty_without_shift(state) + 500
 
     def _forward_tilt_penalty(self, state):
-        return self._forward_tilt_penalty_without_shift(state) + 100
+        return self._forward_tilt_penalty_without_shift(state)
 
     def _x_axis_angle_rotation_penalty(self, state):
-        return self._x_axis_angle_rotation_penalty_without_shift(state) + 100
-
-
-class HumanoidHeightTiltNormalLowPenaltyShiftedThreeOneOne(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
-    def _height_penalty(self, state):
-        return self._height_penalty_without_shift(state) + 300
-
-    def _forward_tilt_penalty(self, state):
-        return self._forward_tilt_penalty_without_shift(state) + 100
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        return self._x_axis_angle_rotation_penalty_without_shift(state) + 100
+        return self._x_axis_angle_rotation_penalty_without_shift(state)
 
 
 class FiFactory:
@@ -314,10 +303,9 @@ class FiFactory:
         "quadraticWideFlatTopWithBodyTiltLowerPenalty": HumanoidWideFlatTopQuadraticWithBodyTiltLowerPenaltyFi,
 
         #####################################
+        "normalHeightTiltSmallShiftedFiveNoneNone": HumanoidHeightTiltNormalLowPenaltyShiftedFiveNoneNone,
+        "normalHeightTiltSmallShiftedFiveBaseBase": HumanoidHeightTiltNormalLowPenaltyShiftedFiveBaseBase,
 
-        "normalHeightTiltSmallShiftedFiveThreeThree": HumanoidHeightTiltNormalLowPenaltyShiftedFiveThreeThree,
-        "normalHeightTiltSmallShiftedFiveOneOne": HumanoidHeightTiltNormalLowPenaltyShiftedFiveOneOne,
-        "normalHeightTiltSmallShiftedThreeOneOne": HumanoidHeightTiltNormalLowPenaltyShiftedThreeOneOne
     }
 
     @staticmethod

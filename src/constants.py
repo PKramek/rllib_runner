@@ -56,3 +56,7 @@ class Constants:
     HEIGHT_INDEX = 0
     TILT_INDEX = 3  # In qpos its under index 5, but observation cuts first two elements
     X_AXIS_ROTATION_INDEX = 4  # In qpos its under index 6, but observation cuts first two elements
+
+    HEIGHT_NOMINAL_VALUE = 1.4
+    TILT_NOMINAL_VALUE = 0.1
+    X_AXIS_ROTATION_NOMINAL_VALUE = 0.0

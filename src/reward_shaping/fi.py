@@ -89,12 +89,12 @@ class HumanoidNewNormalNarrow():
 
 class HumanoidNewNormalNarrowSmallDiff(HumanoidNewNormalNarrow):
     def __call__(self, state):
-        return super.__call__(state) / 2
+        return super().__call__(state) / 2
 
 
 class HumanoidNewNormalNarrowBigDiff(HumanoidNewNormalNarrow):
     def __call__(self, state):
-        return super.__call__(state) * 2
+        return super().__call__(state) * 2
 
 
 class HumanoidNewNormalSuperNarrow():
@@ -106,12 +106,12 @@ class HumanoidNewNormalSuperNarrow():
 
 class HumanoidNewNormalSuperNarrowSmallDiff(HumanoidNewNormalSuperNarrow):
     def __call__(self, state):
-        return super.__call__(state) / 2
+        return super().__call__(state) / 2
 
 
 class HumanoidNewNormalSuperNarrowBigDiff(HumanoidNewNormalSuperNarrow):
     def __call__(self, state):
-        return super.__call__(state) * 2
+        return super().__call__(state) * 2
 
 
 # Both heuristics

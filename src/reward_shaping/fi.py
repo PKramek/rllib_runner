@@ -23,7 +23,7 @@ class HumanoidHeightNormalLowPenaltyShiftedExtremely(Fi):
 
 ################## HumanoidHeightNormalLowPenaltyShiftedExtremely with forward tilt
 
-class AbstractHumanoidHeightTiltNormalLowPenaltyShifted(ABC):
+class AbstractHumanoidMultipleDimensions(ABC):
     def __call__(self, state):
         return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
             state)
@@ -40,6 +40,12 @@ class AbstractHumanoidHeightTiltNormalLowPenaltyShifted(ABC):
     def _x_axis_angle_rotation_penalty(self, state):
         raise NotImplementedError
 
+
+class AbstractHumanoidHeightTiltNormalLowPenaltyShifted(AbstractHumanoidMultipleDimensions):
+    def __call__(self, state):
+        return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
+            state)
+
     def _height_penalty_without_shift(self, state):
         index = Constants.HEIGHT_INDEX
         return 10 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05)
@@ -53,51 +59,7 @@ class AbstractHumanoidHeightTiltNormalLowPenaltyShifted(ABC):
         return 10 * normal_dist_density(state[index], Constants.X_AXIS_ROTATION_NOMINAL_VALUE, 0.05)
 
 
-class HumanoidHeightTiltNormalLowPenaltyShiftedFiveNoneNone(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
-    def _height_penalty(self, state):
-        return self._height_penalty_without_shift(state) + 500
-
-    def _forward_tilt_penalty(self, state):
-        return 0
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        return 0
-
-
-class HumanoidHeightTiltNormalLowPenaltyShiftedFiveBaseBase(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
-    def _height_penalty(self, state):
-        return self._height_penalty_without_shift(state) + 500
-
-    def _forward_tilt_penalty(self, state):
-        return self._forward_tilt_penalty_without_shift(state)
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        return self._x_axis_angle_rotation_penalty_without_shift(state)
-
-
-class HumanoidHeightTiltNormalLowPenaltyShiftedThreeOneOne(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
-    def _height_penalty(self, state):
-        return self._height_penalty_without_shift(state) + 300
-
-    def _forward_tilt_penalty(self, state):
-        return self._forward_tilt_penalty_without_shift(state) + 100
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        return self._x_axis_angle_rotation_penalty_without_shift(state) + 100
-
-
-class HumanoidHeightTiltNormalLowPenaltyShiftedTwoTwoOne(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
-    def _height_penalty(self, state):
-        return self._height_penalty_without_shift(state) + 200.0
-
-    def _forward_tilt_penalty(self, state):
-        return self._forward_tilt_penalty_without_shift(state) + 200.0
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        return self._x_axis_angle_rotation_penalty_without_shift(state) + 100.0
-
-
-class HumanoidJustFive(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
+class HumanoidJustFive(AbstractHumanoidMultipleDimensions):
     def _height_penalty(self, state):
         return 500.0
 
@@ -108,41 +70,161 @@ class HumanoidJustFive(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
         return 0.0
 
 
-############ New Normal
-class HumanoidNewNormalSmallDiffMaxInFiveHundred():
+def func_normal_narrow(value: float, middle_of_normal_dist: float):
+    return 3200 * normal_dist_density(value, middle_of_normal_dist, 0.05)
+
+
+def func_normal_super_narrow(value: float, middle_of_normal_dist: float):
+    return 6400 * normal_dist_density(value, middle_of_normal_dist, 0.02)
+
+
+# Just body height heuristic
+
+class HumanoidNewNormalNarrow():
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
-        return 160 * normal_dist_density(state[index], 1.4, 1)
+        middle_of_dist = Constants.HEIGHT_NOMINAL_VALUE
+        return func_normal_narrow(state[index], middle_of_dist)
 
 
-class HumanoidNewNormalBiggerDiffMaxInFiveHundred():
+class HumanoidNewNormalNarrowSmallDiff(HumanoidNewNormalNarrow):
+    def __call__(self, state):
+        return super.__call__(state) / 2
+
+
+class HumanoidNewNormalNarrowBigDiff(HumanoidNewNormalNarrow):
+    def __call__(self, state):
+        return super.__call__(state) * 2
+
+
+class HumanoidNewNormalSuperNarrow():
     def __call__(self, state):
         index = Constants.HEIGHT_INDEX
-        return (320 * normal_dist_density(state[index], 1.4, 0.5))
+        middle_of_dist = Constants.HEIGHT_NOMINAL_VALUE
+        return func_normal_super_narrow(state[index], middle_of_dist)
 
 
-class HumanoidNewNormalBigDiffMaxInFiveHundred():
+class HumanoidNewNormalSuperNarrowSmallDiff(HumanoidNewNormalSuperNarrow):
     def __call__(self, state):
+        return super.__call__(state) / 2
+
+
+class HumanoidNewNormalSuperNarrowBigDiff(HumanoidNewNormalSuperNarrow):
+    def __call__(self, state):
+        return super.__call__(state) * 2
+
+
+# Both heuristics
+
+class HumanoidBothHeuristicsNewNormalNarrow(AbstractHumanoidMultipleDimensions):
+    def _height_penalty(self, state):
         index = Constants.HEIGHT_INDEX
-        return (640 * normal_dist_density(state[index], 1.4, 0.25))
+        middle_of_dist = Constants.HEIGHT_NOMINAL_VALUE
+
+        return func_normal_narrow(state[index], middle_of_dist)
+
+    def _forward_tilt_penalty(self, state):
+        index = Constants.TILT_INDEX
+        middle_of_dist = Constants.TILT_NOMINAL_VALUE
+
+        return func_normal_narrow(state[index], middle_of_dist)
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        index = Constants.X_AXIS_ROTATION_INDEX
+        middle_of_dist = Constants.X_AXIS_ROTATION_NOMINAL_VALUE
+
+        return func_normal_narrow(state[index], middle_of_dist)
+
+
+class HumanoidBothHeuristicsNewNormalNarrowBigDiff(HumanoidBothHeuristicsNewNormalNarrow):
+    def _height_penalty(self, state):
+        return super()._height_penalty(state) * 2
+
+    def _forward_tilt_penalty(self, state):
+        return super()._forward_tilt_penalty(state) * 2
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        return super()._x_axis_angle_rotation_penalty(state) * 2
+
+
+class HumanoidBothHeuristicsNewNormalNarrowSmallDiff(HumanoidBothHeuristicsNewNormalNarrow):
+    def _height_penalty(self, state):
+        return super()._height_penalty(state) / 2
+
+    def _forward_tilt_penalty(self, state):
+        return super()._forward_tilt_penalty(state) / 2
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        return super()._x_axis_angle_rotation_penalty(state) / 2
+
+
+class HumanoidBothHeuristicsNewNormalSuperNarrow(AbstractHumanoidMultipleDimensions):
+    def _height_penalty(self, state):
+        index = Constants.HEIGHT_INDEX
+        middle_of_dist = Constants.HEIGHT_NOMINAL_VALUE
+
+        return func_normal_super_narrow(state[index], middle_of_dist)
+
+    def _forward_tilt_penalty(self, state):
+        index = Constants.TILT_INDEX
+        middle_of_dist = Constants.TILT_NOMINAL_VALUE
+
+        return func_normal_super_narrow(state[index], middle_of_dist)
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        index = Constants.X_AXIS_ROTATION_INDEX
+        middle_of_dist = Constants.X_AXIS_ROTATION_NOMINAL_VALUE
+
+        return func_normal_super_narrow(state[index], middle_of_dist)
+
+
+class HumanoidBothHeuristicsNewNormalSuperNarrowBigDiff(HumanoidBothHeuristicsNewNormalSuperNarrow):
+    def _height_penalty(self, state):
+        return super()._height_penalty(state) * 2
+
+    def _forward_tilt_penalty(self, state):
+        return super()._forward_tilt_penalty(state) * 2
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        return super()._x_axis_angle_rotation_penalty(state) * 2
+
+
+class HumanoidBothHeuristicsNewNormalSuperNarrowSmallDiff(HumanoidBothHeuristicsNewNormalSuperNarrow):
+    def _height_penalty(self, state):
+        return super()._height_penalty(state) / 2
+
+    def _forward_tilt_penalty(self, state):
+        return super()._forward_tilt_penalty(state) / 2
+
+    def _x_axis_angle_rotation_penalty(self, state):
+        return super()._x_axis_angle_rotation_penalty(state) / 2
 
 
 class FiFactory:
     FI_MAPPING = {
         'normalSmallSHiftedExtremally': HumanoidHeightNormalLowPenaltyShiftedExtremely,
 
-        # Forward Tilt
-        "normalHeightTiltSmallShiftedFiveNoneNone": HumanoidHeightTiltNormalLowPenaltyShiftedFiveNoneNone,
-        "normalHeightTiltSmallShiftedFiveBaseBase": HumanoidHeightTiltNormalLowPenaltyShiftedFiveBaseBase,
-        "normalHeightTiltSmallShiftedThreeOneOne": HumanoidHeightTiltNormalLowPenaltyShiftedThreeOneOne,
-        "normalHeightTiltSmallShiftedTwoTwoOne": HumanoidHeightTiltNormalLowPenaltyShiftedTwoTwoOne,
-
         "justFiveHundred": HumanoidJustFive,
 
         # New Normal
-        "newNormalSmallDiff": HumanoidNewNormalSmallDiffMaxInFiveHundred,
-        "newNormalBiggerDiff": HumanoidNewNormalBiggerDiffMaxInFiveHundred,
-        "newNormalBigDiff": HumanoidNewNormalBigDiffMaxInFiveHundred
+        "newNormalNarrow": HumanoidNewNormalNarrow,
+        "newNormalNarrowBigDiff": HumanoidNewNormalNarrowBigDiff,
+        "newNormalNarrowSmallDiff": HumanoidNewNormalNarrowSmallDiff,
+
+        # New Normal Narrow
+        "newNormalSuperNarrow": HumanoidNewNormalSuperNarrow,
+        "newNormalSuperNarrowBigDiff": HumanoidNewNormalSuperNarrow,
+        "newNormalSuperNarrowSmallDiff": HumanoidNewNormalSuperNarrow,
+
+        # New Normal Both Heuristics
+        "newNormalNarrowBothHeuristics": HumanoidBothHeuristicsNewNormalNarrow,
+        "newNormalNarrowBothHeuristicsBigDiff": HumanoidBothHeuristicsNewNormalNarrowBigDiff,
+        "newNormalNarrowBothHeuristicsSmallDiff": HumanoidBothHeuristicsNewNormalNarrowSmallDiff,
+
+        # New Normal Narrow Both Heuristics
+        "newNormalSuperNarrowBothHeuristics": HumanoidBothHeuristicsNewNormalSuperNarrow,
+        "newNormalSuperNarrowBothHeuristicsBigDiff": HumanoidBothHeuristicsNewNormalSuperNarrowBigDiff,
+        "newNormalSuperNarrowBothHeuristicsSmallDiff": HumanoidBothHeuristicsNewNormalSuperNarrowSmallDiff,
     }
 
     @staticmethod

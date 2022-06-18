@@ -88,24 +88,24 @@ class HumanoidHeightTiltNormalLowPenaltyShiftedThreeOneOne(AbstractHumanoidHeigh
 
 class HumanoidHeightTiltNormalLowPenaltyShiftedTwoTwoOne(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
     def _height_penalty(self, state):
-        return self._height_penalty_without_shift(state) + 200
+        return self._height_penalty_without_shift(state) + 200.0
 
     def _forward_tilt_penalty(self, state):
-        return self._forward_tilt_penalty_without_shift(state) + 200
+        return self._forward_tilt_penalty_without_shift(state) + 200.0
 
     def _x_axis_angle_rotation_penalty(self, state):
-        return self._x_axis_angle_rotation_penalty_without_shift(state) + 100
+        return self._x_axis_angle_rotation_penalty_without_shift(state) + 100.0
 
 
 class HumanoidJustFive(AbstractHumanoidHeightTiltNormalLowPenaltyShifted):
     def _height_penalty(self, state):
-        return 500
+        return 500.0
 
     def _forward_tilt_penalty(self, state):
-        return 0
+        return 0.0
 
     def _x_axis_angle_rotation_penalty(self, state):
-        return 0
+        return 0.0
 
 
 ############ New Normal

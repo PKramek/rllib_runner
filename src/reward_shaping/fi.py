@@ -222,8 +222,8 @@ class FiFactory:
 
         "justFiveHundred": HumanoidJustFive,
 
-        "normalJustTiltNarrow": HumanoidJustTiltNewNormalNarrow,
-        "normalAliveBonusTiltNarrowThreeOneOne": HumanoidJustTiltAliveBonusNarrowThreeOneOne,
+        "normalJustTiltNarrow": HumanoidJustTiltNewNormalNarrow,  # BAD
+        "normalAliveBonusTiltNarrowThreeOneOne": HumanoidJustTiltAliveBonusNarrowThreeOneOne,  # BAD
         "normalAliveBonusTiltNarrowTwoTwoOne": HumanoidJustTiltAliveBonusNarrowTwoTwoOne,
         "normalAliveBonusTiltNarrowThreeTwoOne": HumanoidJustTiltAliveBonusNarrowThreeTwoOne,
 

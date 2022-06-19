@@ -53,6 +53,42 @@ class SmallHeightBonus(Psi):
         return 16 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05)
 
 
+class HeightPenaltyNarrow(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 80 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.02) - 5
+
+
+class SmallerHeightPenaltyNarrow(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 60 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.02) - 3.8
+
+
+class SmallHeightPenaltyNarrow(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 40 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.02) - 2.51
+
+
+class HeightPenalty(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 32 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05) - 5.0
+
+
+class SmallerHeightPenalty(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 20 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05) - 3.14
+
+
+class SmallHeightPenalty(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 16 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05) - 2.51
+
+
 class PsiFactory:
     PSI_MAPPING = {
         'aliveBonus': AliveBonus,
@@ -65,6 +101,15 @@ class PsiFactory:
         "heightNarrowBonus": HeightBonusNarrow,
         "smallerHeightNarrowBonus": SmallerHeightBonusNarrow,
         "smallHeightNarrowBonus": SmallHeightBonusNarrow,
+
+        # Penalty
+        "heightPenalty": HeightPenalty,
+        "smallerHeightPenalty": SmallerHeightPenalty,
+        "smallHeightPenalty": SmallHeightPenalty,
+
+        "heightNarrowPenalty": HeightPenaltyNarrow,
+        "smallerHeightNarrowPenalty": SmallerHeightPenaltyNarrow,
+        "smallHeightNarrowPenalty": SmallHeightPenaltyNarrow,
     }
 
     @staticmethod

@@ -7,12 +7,14 @@ from ray.tune.registry import register_env
 from src.algorithms import AlgorithmFactory
 from src.args_parser import parser
 from src.constants import Constants
+from src.reward_modifier.psi import PsiFactory
+from src.reward_modifier.reward_modifier_creator import RewardModifierEnvironmentCreator, \
+    RewardModifierEnvironmentWithDifferentEvaluationEnvironmentCreator
 from src.reward_shaping.fi import FiFactory
 from src.reward_shaping.reward_shaping_creator import RewardShapingEnvironmentCreator, \
     RewardShapingEnvironmentWithDifferentEvaluationEnvironmentCreator
 from src.util import trial_name_generator, trial_dirname_creator, create_and_save_evaluation_results_file, setup_logger, \
     add_tune_specific_config_fields, get_max_memory_size
-import pybullet_envs
 
 if __name__ == "__main__":
 
@@ -52,6 +54,27 @@ if __name__ == "__main__":
             f"Registering environment: {env_name}, base environment: {base_environment}, eval environment: {eval_environment}")
 
     logger.info("Reward shaping environments with different evaluation environment registered.")
+
+    test_psi_names = PsiFactory.PSI_MAPPING.keys()
+
+    for psi_name in test_psi_names:
+        psi_x = PsiFactory.get_psi(psi_name)
+        environment_with_reward_modifier = RewardModifierEnvironmentWithDifferentEvaluationEnvironmentCreator(
+            base_environment, psi_x, eval_environment)
+        env_name = f"{psi_name}WithDifferentEvaluationRewardModifierHumanoid-v2"
+
+        register_env(env_name, environment_with_reward_modifier)
+        logger.info(f"Registering environment: {env_name}, base environment: {base_environment}")
+
+    logger.info("Reward modifier environments registered.")
+
+    for psi_name in test_psi_names:
+        psi_x = PsiFactory.get_psi(psi_name)
+        environment_with_reward_modifier = RewardModifierEnvironmentCreator(base_environment, psi_x)
+        env_name = f"{psi_name}RewardModifierHumanoid-v2"
+
+        register_env(env_name, environment_with_reward_modifier)
+        logger.info(f"Registering environment: {env_name}, base environment: {base_environment}")
 
     algorithm_name = args.pop('algo')
     max_timesteps = args.pop('max_timesteps')

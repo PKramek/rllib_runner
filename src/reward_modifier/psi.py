@@ -12,6 +12,11 @@ class AliveBonus(Psi):
         return 5.0
 
 
+class AlivePenalty(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        return -5.0
+
+
 class HeightBonusNarrow(Psi):
     def __call__(self, state: np.ndarray) -> float:
         index = Constants.HEIGHT_INDEX
@@ -51,6 +56,7 @@ class SmallHeightBonus(Psi):
 class PsiFactory:
     PSI_MAPPING = {
         'aliveBonus': AliveBonus,
+        "alivePenalty": AlivePenalty,
 
         "heightBonus": HeightBonus,
         "smallerHeightBonus": SmallerHeightBonus,
@@ -59,7 +65,6 @@ class PsiFactory:
         "heightNarrowBonus": HeightBonusNarrow,
         "smallerHeightNarrowBonus": SmallerHeightBonusNarrow,
         "smallHeightNarrowBonus": SmallHeightBonusNarrow,
-
     }
 
     @staticmethod

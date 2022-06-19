@@ -25,6 +25,8 @@ class TestRewardShapingWrapper:
         (100.0, 10.0, 0.0, 0.99, 90.0),  # 100.0 - 10.0 + 0.99 * 0.0 = 90.0
         (100.0, -10.0, 0.0, 0.99, 110.0),  # 100.0 - (-10.0) + 0.99 * 0.0 = 110.0
         (100.0, 0.0, -10.0, 0.9, 91.0),  # 100.0 - 0.0 + 0.9 * (-10.0) = 91.0
+        (0.0, 500.0, 500.0, 0.99, -5.0),
+        (0.0, 500.0, 500.0, 0.99, -5.0),
     ])
     def test_correctly_shapes_reward(self, unmodified_reward: float, last_fi_value: float,
                                      fi_value: float, gamma: float,

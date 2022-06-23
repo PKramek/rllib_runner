@@ -89,6 +89,30 @@ class SmallHeightPenalty(Psi):
         return 16 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05) - 2.51
 
 
+class HeightPenaltySlightlyNarrow(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 110 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.015) - 5.18
+
+
+class HeightPenaltyVeryNarrow(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 160 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.01) - 5.02
+
+
+class HeightPenaltySuperNarrow(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 320 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.005) - 5.02
+
+
+class HeightPenaltyUltraNarrow(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 1600 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.001) - 5.02
+
+
 class PsiFactory:
     PSI_MAPPING = {
         'aliveBonus': AliveBonus,
@@ -110,6 +134,11 @@ class PsiFactory:
         "heightNarrowPenalty": HeightPenaltyNarrow,
         "smallerHeightNarrowPenalty": SmallerHeightPenaltyNarrow,
         "smallHeightNarrowPenalty": SmallHeightPenaltyNarrow,
+
+        "heightSlightlyNarrowPenalty": HeightPenaltySlightlyNarrow,
+        "heightVeryNarrowPenalty": HeightPenaltyVeryNarrow,
+        "heightSuperNarrowPenalty": HeightPenaltySuperNarrow,
+        "heightUltraNarrowPenalty": HeightPenaltyUltraNarrow
     }
 
     @staticmethod

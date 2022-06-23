@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from typing import Type
 
 import numpy as np
@@ -5,6 +6,19 @@ import numpy as np
 from src.constants import Constants
 from src.reward_modifier.psi_base import Psi
 from src.reward_modifier.util import normal_dist_density
+
+
+class HeightAlivePenaltyAbstract(Psi, ABC):
+    @abstractmethod
+    def _height_penalty(self, state: np.ndarray) -> float:
+        return NotImplementedError()
+
+    @abstractmethod
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        raise NotImplementedError()
+
+    def __call__(self, state: np.ndarray) -> float:
+        return self._height_penalty(state) + self._alive_penalty(state)
 
 
 class AliveBonus(Psi):
@@ -113,6 +127,78 @@ class HeightPenaltyUltraNarrow(Psi):
         return 1600 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.001) - 5.02
 
 
+#################################
+
+class HeightAliveFivePenaltySlightlyNarrow(HeightAlivePenaltyAbstract):
+
+    def _height_penalty(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 110 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.015) - 5.18
+
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        return -5.0
+
+
+class HeightAliveFivePenaltySuperNarrow(HeightAlivePenaltyAbstract):
+
+    def _height_penalty(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 320 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.005) - 5.02
+
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        return -5.0
+
+
+####
+
+class HeightAliveFourPenaltySlightlyNarrow(HeightAliveFivePenaltySlightlyNarrow):
+
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        return -4.0
+
+
+class HeightAliveFourPenaltySuperNarrow(HeightAliveFivePenaltySuperNarrow):
+
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        return -4.0
+
+
+class HeightAliveThreePenaltySlightlyNarrow(HeightAliveFivePenaltySlightlyNarrow):
+
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        return -3.0
+
+
+class HeightAliveThreePenaltySuperNarrow(HeightAliveFivePenaltySuperNarrow):
+
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        return -3.0
+
+
+class HeightAliveTwoPenaltySlightlyNarrow(HeightAliveFivePenaltySlightlyNarrow):
+
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        return -2.0
+
+
+class HeightAliveTwoPenaltySuperNarrow(HeightAliveFivePenaltySuperNarrow):
+
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        return -2.0
+
+
+class HeightAliveOnePenaltySlightlyNarrow(HeightAliveFivePenaltySlightlyNarrow):
+
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        return -1.0
+
+
+class HeightAliveOnePenaltySuperNarrow(HeightAliveFivePenaltySuperNarrow):
+
+    def _alive_penalty(self, state: np.ndarray) -> float:
+        return -1.0
+
+
 class PsiFactory:
     PSI_MAPPING = {
         'aliveBonus': AliveBonus,
@@ -138,7 +224,24 @@ class PsiFactory:
         "heightSlightlyNarrowPenalty": HeightPenaltySlightlyNarrow,
         "heightVeryNarrowPenalty": HeightPenaltyVeryNarrow,
         "heightSuperNarrowPenalty": HeightPenaltySuperNarrow,
-        "heightUltraNarrowPenalty": HeightPenaltyUltraNarrow
+        "heightUltraNarrowPenalty": HeightPenaltyUltraNarrow,
+
+        #####################
+
+        "aliveFiveHeightSlightlyNarrowPenalty": HeightAliveFivePenaltySlightlyNarrow,
+        "aliveFiveHeightSuperNarrowPenalty": HeightAliveFivePenaltySuperNarrow,
+
+        "aliveFourHeightSlightlyNarrowPenalty": HeightAliveFourPenaltySlightlyNarrow,
+        "aliveFourHeightSuperNarrowPenalty": HeightAliveFourPenaltySuperNarrow,
+
+        "aliveThreeHeightSlightlyNarrowPenalty": HeightAliveThreePenaltySlightlyNarrow,
+        "aliveThreeHeightSuperNarrowPenalty": HeightAliveThreePenaltySuperNarrow,
+
+        "aliveTwoHeightSlightlyNarrowPenalty": HeightAliveTwoPenaltySlightlyNarrow,
+        "aliveTwoHeightSuperNarrowPenalty": HeightAliveTwoPenaltySuperNarrow,
+
+        "aliveOneHeightSlightlyNarrowPenalty": HeightAliveOnePenaltySlightlyNarrow,
+        "aliveOneHeightSuperNarrowPenalty": HeightAliveOnePenaltySuperNarrow,
     }
 
     @staticmethod

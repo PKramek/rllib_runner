@@ -14,15 +14,6 @@ class SumFi(Fi):
         return np.sum(state)
 
 
-# Current Best
-class HumanoidHeightNormalLowPenaltyShiftedExtremely(Fi):
-    def __call__(self, state):
-        index = Constants.HEIGHT_INDEX
-        return (10 * normal_dist_density(state[index], 1.4, 0.05)) + 500
-
-
-################## HumanoidHeightNormalLowPenaltyShiftedExtremely with forward tilt
-
 class AbstractHumanoidMultipleDimensions(ABC):
     def __call__(self, state):
         return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
@@ -41,22 +32,11 @@ class AbstractHumanoidMultipleDimensions(ABC):
         raise NotImplementedError
 
 
-class AbstractHumanoidHeightTiltNormalLowPenaltyShifted(AbstractHumanoidMultipleDimensions):
+# Current Best
+class HumanoidHeightNormalLowPenaltyShiftedExtremely(Fi):
     def __call__(self, state):
-        return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
-            state)
-
-    def _height_penalty_without_shift(self, state):
         index = Constants.HEIGHT_INDEX
-        return 10 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05)
-
-    def _forward_tilt_penalty_without_shift(self, state):
-        index = Constants.TILT_INDEX
-        return 10 * normal_dist_density(state[index], Constants.TILT_NOMINAL_VALUE, 0.05)
-
-    def _x_axis_angle_rotation_penalty_without_shift(self, state):
-        index = Constants.X_AXIS_ROTATION_INDEX
-        return 10 * normal_dist_density(state[index], Constants.X_AXIS_ROTATION_NOMINAL_VALUE, 0.05)
+        return (10 * normal_dist_density(state[index], 1.4, 0.05)) + 500
 
 
 class HumanoidJustFive(AbstractHumanoidMultipleDimensions):
@@ -70,167 +50,67 @@ class HumanoidJustFive(AbstractHumanoidMultipleDimensions):
         return 0.0
 
 
-def func_normal_narrow(value: float, middle_of_normal_dist: float):
-    return 3200 * normal_dist_density(value, middle_of_normal_dist, 0.05)
+################################
+
+class HeightPenaltySlightlyNarrow(Fi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 110 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.015) - 5.18
 
 
-def func_normal_super_narrow(value: float, middle_of_normal_dist: float):
-    return 6400 * normal_dist_density(value, middle_of_normal_dist, 0.02)
+class HeightPenaltySlightlyNarrowFive(HeightPenaltySlightlyNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 5
 
 
-# Just Tilt
-
-class HumanoidJustTiltNewNormalNarrow(AbstractHumanoidMultipleDimensions):
-    def _height_penalty(self, state):
-        return 0
-
-    def _forward_tilt_penalty(self, state):
-        index = Constants.TILT_INDEX
-        middle_of_dist = Constants.TILT_NOMINAL_VALUE
-
-        return func_normal_narrow(state[index], middle_of_dist)
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        index = Constants.X_AXIS_ROTATION_INDEX
-        middle_of_dist = Constants.X_AXIS_ROTATION_NOMINAL_VALUE
-
-        return func_normal_narrow(state[index], middle_of_dist)
+class HeightPenaltySlightlyNarrowTen(HeightPenaltySlightlyNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 10
 
 
-class HumanoidJustTiltAliveBonusNarrowThreeOneOne(HumanoidJustTiltNewNormalNarrow):
-    def _height_penalty(self, state):
-        return 300
-
-    def _forward_tilt_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._forward_tilt_penalty(state)
-
-        return base_penalty / 4
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._x_axis_angle_rotation_penalty(state)
-
-        return base_penalty / 4
+class HeightPenaltySlightlyNarrowTwenty(HeightPenaltySlightlyNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 20
 
 
-class HumanoidJustTiltAliveBonusNarrowTwoTwoOne(HumanoidJustTiltNewNormalNarrow):
-    def _height_penalty(self, state):
-        return 200
-
-    def _forward_tilt_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._forward_tilt_penalty(state)
-
-        return base_penalty / 2
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._x_axis_angle_rotation_penalty(state)
-
-        return base_penalty / 4
+class HeightPenaltySlightlyNarrowFifty(HeightPenaltySlightlyNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 50
 
 
-class HumanoidJustTiltAliveBonusNarrowThreeTwoOne(HumanoidJustTiltNewNormalNarrow):
-    def _height_penalty(self, state):
-        return 300
-
-    def _forward_tilt_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._forward_tilt_penalty(state)
-
-        return base_penalty / 2
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._x_axis_angle_rotation_penalty(state)
-
-        return base_penalty / 4
+class HeightPenaltySlightlyNarrowSeventy(HeightPenaltySlightlyNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 70
 
 
-class HumanoidJustTiltNewNormalSuperNarrow(AbstractHumanoidMultipleDimensions):
-    def _height_penalty(self, state):
-        return 0
-
-    def _forward_tilt_penalty(self, state):
-        index = Constants.TILT_INDEX
-        middle_of_dist = Constants.TILT_NOMINAL_VALUE
-
-        return func_normal_super_narrow(state[index], middle_of_dist)
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        index = Constants.X_AXIS_ROTATION_INDEX
-        middle_of_dist = Constants.X_AXIS_ROTATION_NOMINAL_VALUE
-
-        return func_normal_super_narrow(state[index], middle_of_dist)
+class HeightPenaltySlightlyNarrowHundred(HeightPenaltySlightlyNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 100
 
 
-class HumanoidJustTiltAliveBonusSuperNarrowThreeOneOne(HumanoidJustTiltNewNormalSuperNarrow):
-    def _height_penalty(self, state):
-        return 300
-
-    def _forward_tilt_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._forward_tilt_penalty(state)
-
-        return base_penalty / 4
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._x_axis_angle_rotation_penalty(state)
-
-        return base_penalty / 4
+class HeightPenaltySlightlyNarrowHundredFifty(HeightPenaltySlightlyNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 150
 
 
-class HumanoidJustTiltAliveBonusSuperNarrowTwoTwoOne(HumanoidJustTiltNewNormalSuperNarrow):
-    def _height_penalty(self, state):
-        return 200
-
-    def _forward_tilt_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._forward_tilt_penalty(state)
-
-        return base_penalty / 2
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._x_axis_angle_rotation_penalty(state)
-
-        return base_penalty / 4
-
-
-class HumanoidJustTiltAliveBonusSuperNarrowThreeTwoOne(HumanoidJustTiltNewNormalSuperNarrow):
-    def _height_penalty(self, state):
-        return 300
-
-    def _forward_tilt_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._forward_tilt_penalty(state)
-
-        return base_penalty / 2
-
-    def _x_axis_angle_rotation_penalty(self, state):
-        # Max in 400
-        base_penalty = super()._x_axis_angle_rotation_penalty(state)
-
-        return base_penalty / 4
+class HeightPenaltySlightlyNarrowHundredTwoHundred(HeightPenaltySlightlyNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 200
 
 
 class FiFactory:
     FI_MAPPING = {
         'normalSmallSHiftedExtremally': HumanoidHeightNormalLowPenaltyShiftedExtremely,
-
         "justFiveHundred": HumanoidJustFive,
 
-        "normalJustTiltNarrow": HumanoidJustTiltNewNormalNarrow,  # BAD
-        "normalAliveBonusTiltNarrowThreeOneOne": HumanoidJustTiltAliveBonusNarrowThreeOneOne,  # BAD
-        "normalAliveBonusTiltNarrowTwoTwoOne": HumanoidJustTiltAliveBonusNarrowTwoTwoOne,
-        "normalAliveBonusTiltNarrowThreeTwoOne": HumanoidJustTiltAliveBonusNarrowThreeTwoOne,
-
-        "normalJustTiltSuperNarrow": HumanoidJustTiltNewNormalSuperNarrow,
-        "normalAliveBonusTiltSuperNarrowThreeOneOne": HumanoidJustTiltAliveBonusSuperNarrowThreeOneOne,
-        "normalAliveBonusTiltSuperNarrowTwoTwoOne": HumanoidJustTiltAliveBonusSuperNarrowTwoTwoOne,
-        "normalAliveBonusTiltSuperNarrowThreeTwoOne": HumanoidJustTiltAliveBonusSuperNarrowThreeTwoOne,
+        "heightSlightlyNarrowPenalty": HeightPenaltySlightlyNarrow,
+        "heightSlightlyNarrowPenaltyTen": HeightPenaltySlightlyNarrowTen,
+        "heightSlightlyNarrowPenaltyTwenty": HeightPenaltySlightlyNarrowTwenty,
+        "heightSlightlyNarrowPenaltyFifty": HeightPenaltySlightlyNarrowFifty,
+        "heightSlightlyNarrowPenaltySeventy": HeightPenaltySlightlyNarrowSeventy,
+        "heightSlightlyNarrowPenaltyHundred": HeightPenaltySlightlyNarrowHundred,
+        "heightSlightlyNarrowPenaltyHundredFifty": HeightPenaltySlightlyNarrowHundredFifty,
+        "heightSlightlyNarrowPenaltyTwoHundred": HeightPenaltySlightlyNarrowHundredTwoHundred,
 
     }
 

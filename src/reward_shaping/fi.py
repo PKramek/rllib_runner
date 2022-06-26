@@ -98,6 +98,9 @@ class HeightPenaltySlightlyNarrowHundredTwoHundred(HeightPenaltySlightlyNarrow):
         return super().__call__(state) * 200
 
 
+
+
+
 class FiFactory:
     FI_MAPPING = {
         'normalSmallSHiftedExtremally': HumanoidHeightNormalLowPenaltyShiftedExtremely,

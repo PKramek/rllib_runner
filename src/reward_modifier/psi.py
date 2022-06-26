@@ -8,17 +8,26 @@ from src.reward_modifier.psi_base import Psi
 from src.reward_modifier.util import normal_dist_density
 
 
-class HeightAlivePenaltyAbstract(Psi, ABC):
-    @abstractmethod
-    def _height_penalty(self, state: np.ndarray) -> float:
-        return NotImplementedError()
+def slightly_narrow_normal_dist_max_five(value: float, middle_of_dist: float):
+    return 110 * normal_dist_density(value, middle_of_dist, 0.015) - 5.18
+
+
+class AbstractHumanoidHeightTiltXAxis(ABC, Psi):
+    def __call__(self, state: np.ndarray):
+        return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
+            state)
 
     @abstractmethod
-    def _alive_penalty(self, state: np.ndarray) -> float:
-        raise NotImplementedError()
+    def _height_penalty(self, state: np.ndarray):
+        raise NotImplementedError
 
-    def __call__(self, state: np.ndarray) -> float:
-        return self._height_penalty(state) + self._alive_penalty(state)
+    @abstractmethod
+    def _forward_tilt_penalty(self, state: np.ndarray):
+        raise NotImplementedError
+
+    @abstractmethod
+    def _x_axis_angle_rotation_penalty(self, state: np.ndarray):
+        raise NotImplementedError
 
 
 class AliveBonus(Psi):
@@ -31,149 +40,57 @@ class AlivePenalty(Psi):
         return -5.0
 
 
-class HeightBonusNarrow(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 80 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.02)
-
-
-class SmallerHeightBonusNarrow(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 60 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.02)
-
-
-class SmallHeightBonusNarrow(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 40 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.02)
-
-
-class HeightBonus(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 32 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05)
-
-
-class SmallerHeightBonus(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 20 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05)
-
-
-class SmallHeightBonus(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 16 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05)
-
-
-class HeightPenaltyNarrow(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 80 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.02) - 5
-
-
-class SmallerHeightPenaltyNarrow(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 60 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.02) - 3.8
-
-
-class SmallHeightPenaltyNarrow(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 40 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.02) - 2.51
-
-
-class HeightPenalty(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 32 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05) - 5.0
-
-
-class SmallerHeightPenalty(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 20 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05) - 3.14
-
-
-class SmallHeightPenalty(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 16 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.05) - 2.51
-
-
+# The best
 class HeightPenaltySlightlyNarrow(Psi):
     def __call__(self, state: np.ndarray) -> float:
         index = Constants.HEIGHT_INDEX
         return 110 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.015) - 5.18
 
 
-class HeightPenaltyVeryNarrow(Psi):
-    def __call__(self, state: np.ndarray) -> float:
+# Class used to just test if it returns the same results as HeightPenaltySlightlyNarrow
+class HeightTiltXAxisSlightlyNarrowJustHeight(AbstractHumanoidHeightTiltXAxis):
+    def _height_penalty(self, state: np.ndarray):
         index = Constants.HEIGHT_INDEX
-        return 160 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.01) - 5.02
+        middle_of_dist = Constants.HEIGHT_NOMINAL_VALUE
+
+        return slightly_narrow_normal_dist_max_five(state[index], middle_of_dist)
+
+    def _forward_tilt_penalty(self, state: np.ndarray):
+        return 0.0
+
+    def _x_axis_angle_rotation_penalty(self, state: np.ndarray):
+        return 0.0
 
 
-class HeightPenaltySuperNarrow(Psi):
-    def __call__(self, state: np.ndarray) -> float:
+class HeightTiltXAxisSlightlyNarrow(AbstractHumanoidHeightTiltXAxis):
+    def _height_penalty(self, state: np.ndarray):
         index = Constants.HEIGHT_INDEX
-        return 320 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.005) - 5.02
+        middle_of_dist = Constants.HEIGHT_NOMINAL_VALUE
 
+        return slightly_narrow_normal_dist_max_five(state[index], middle_of_dist)
 
-class HeightPenaltyUltraNarrow(Psi):
-    def __call__(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 1600 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.001) - 5.02
+    def _forward_tilt_penalty(self, state: np.ndarray):
+        index = Constants.TILT_INDEX
+        middle_of_dist = Constants.TILT_NOMINAL_VALUE
 
+        return slightly_narrow_normal_dist_max_five(state[index], middle_of_dist)
 
-#################################
+    def _x_axis_angle_rotation_penalty(self, state: np.ndarray):
+        index = Constants.X_AXIS_ROTATION_INDEX
+        middle_of_dist = Constants.X_AXIS_ROTATION_NOMINAL_VALUE
 
-class HeightAliveFivePenaltySlightlyNarrow(HeightAlivePenaltyAbstract):
+        return slightly_narrow_normal_dist_max_five(state[index], middle_of_dist)
 
-    def _height_penalty(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 110 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.015) - 5.18
-
-    def _alive_penalty(self, state: np.ndarray) -> float:
-        return -5.0
-
-
-class HeightAliveFivePenaltySuperNarrow(HeightAlivePenaltyAbstract):
-
-    def _height_penalty(self, state: np.ndarray) -> float:
-        index = Constants.HEIGHT_INDEX
-        return 320 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.005) - 5.02
-
-    def _alive_penalty(self, state: np.ndarray) -> float:
-        return -5.0
 
 class PsiFactory:
     PSI_MAPPING = {
         'aliveBonus': AliveBonus,
         "alivePenalty": AlivePenalty,
-
-        "heightBonus": HeightBonus,
-        "smallerHeightBonus": SmallerHeightBonus,
-        "smallHeightBonus": SmallHeightBonus,
-
-        "heightNarrowBonus": HeightBonusNarrow,
-        "smallerHeightNarrowBonus": SmallerHeightBonusNarrow,
-        "smallHeightNarrowBonus": SmallHeightBonusNarrow,
-
-        # Penalty
-        "heightPenalty": HeightPenalty,
-        "smallerHeightPenalty": SmallerHeightPenalty,
-        "smallHeightPenalty": SmallHeightPenalty,
-
-        "heightNarrowPenalty": HeightPenaltyNarrow,
-        "smallerHeightNarrowPenalty": SmallerHeightPenaltyNarrow,
-        "smallHeightNarrowPenalty": SmallHeightPenaltyNarrow,
-
         "heightSlightlyNarrowPenalty": HeightPenaltySlightlyNarrow,
-        "heightVeryNarrowPenalty": HeightPenaltyVeryNarrow,
-        "heightSuperNarrowPenalty": HeightPenaltySuperNarrow,
-        "heightUltraNarrowPenalty": HeightPenaltyUltraNarrow,
+
+        "heightTiltXAxisSlightlyNarrowPenalty": HeightTiltXAxisSlightlyNarrow,
+        "heightTiltXAxisSlightlyNarrowPenaltyJustHeight": HeightTiltXAxisSlightlyNarrowJustHeight
+
     }
 
     @staticmethod

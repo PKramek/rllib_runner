@@ -98,7 +98,51 @@ class HeightPenaltySlightlyNarrowHundredTwoHundred(HeightPenaltySlightlyNarrow):
         return super().__call__(state) * 200
 
 
+#################################################################################3
+class HeightPenaltyLessNarrow(Fi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        return 55 * normal_dist_density(state[index], Constants.HEIGHT_NOMINAL_VALUE, 0.03) - 5.18
 
+
+class HeightPenaltyLessNarrowFive(HeightPenaltyLessNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 5
+
+
+class HeightPenaltyLessNarrowTen(HeightPenaltyLessNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 10
+
+
+class HeightPenaltyLessNarrowTwenty(HeightPenaltyLessNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 20
+
+
+class HeightPenaltyLessNarrowFifty(HeightPenaltyLessNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 50
+
+
+class HeightPenaltyLessNarrowSeventy(HeightPenaltyLessNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 70
+
+
+class HeightPenaltyLessNarrowHundred(HeightPenaltyLessNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 100
+
+
+class HeightPenaltyLessNarrowHundredFifty(HeightPenaltyLessNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 150
+
+
+class HeightPenaltyLessNarrowTwoHundred(HeightPenaltyLessNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 200
 
 
 class FiFactory:
@@ -115,6 +159,14 @@ class FiFactory:
         "heightSlightlyNarrowPenaltyHundredFifty": HeightPenaltySlightlyNarrowHundredFifty,
         "heightSlightlyNarrowPenaltyTwoHundred": HeightPenaltySlightlyNarrowHundredTwoHundred,
 
+        "heightLessNarrowPenalty": HeightPenaltyLessNarrow,
+        "heightLessNarrowPenaltyTen": HeightPenaltyLessNarrowTen,
+        "heightLessNarrowPenaltyTwenty": HeightPenaltyLessNarrowTwenty,
+        "heightLessNarrowPenaltyFifty": HeightPenaltyLessNarrowFifty,
+        "heightLessNarrowPenaltySeventy": HeightPenaltyLessNarrowSeventy,
+        "heightLessNarrowPenaltyHundred": HeightPenaltyLessNarrowHundred,
+        "heightLessNarrowPenaltyHundredFifty": HeightPenaltyLessNarrowHundredFifty,
+        "heightLessNarrowPenaltyTwoHundred": HeightPenaltyLessNarrowTwoHundred,
     }
 
     @staticmethod

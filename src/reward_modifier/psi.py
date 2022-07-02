@@ -82,6 +82,39 @@ class HeightTiltXAxisSlightlyNarrow(AbstractHumanoidHeightTiltXAxis):
         return slightly_narrow_normal_dist_max_five(state[index], middle_of_dist)
 
 
+class HeightTiltXAxisSlightlyNarrowWeightedSixTwoTwo(HeightTiltXAxisSlightlyNarrow):
+    def _height_penalty(self, state: np.ndarray):
+        return super()._height_penalty(state) * 0.6
+
+    def _forward_tilt_penalty(self, state: np.ndarray):
+        return super()._forward_tilt_penalty(state) * 0.2
+
+    def _x_axis_angle_rotation_penalty(self, state: np.ndarray):
+        return super()._x_axis_angle_rotation_penalty(state) * 0.2
+
+
+class HeightTiltXAxisSlightlyNarrowWeightedThreeThreeThree(HeightTiltXAxisSlightlyNarrow):
+    def _height_penalty(self, state: np.ndarray):
+        return super()._height_penalty(state) * 0.33
+
+    def _forward_tilt_penalty(self, state: np.ndarray):
+        return super()._forward_tilt_penalty(state) * 0.33
+
+    def _x_axis_angle_rotation_penalty(self, state: np.ndarray):
+        return super()._x_axis_angle_rotation_penalty(state) * 0.33
+
+
+class HeightTiltXAxisSlightlyNarrowWeightedFiveThreeTwo(HeightTiltXAxisSlightlyNarrow):
+    def _height_penalty(self, state: np.ndarray):
+        return super()._height_penalty(state) * 0.5
+
+    def _forward_tilt_penalty(self, state: np.ndarray):
+        return super()._forward_tilt_penalty(state) * 0.3
+
+    def _x_axis_angle_rotation_penalty(self, state: np.ndarray):
+        return super()._x_axis_angle_rotation_penalty(state) * 0.32
+
+
 class PsiFactory:
     PSI_MAPPING = {
         'aliveBonus': AliveBonus,
@@ -89,8 +122,10 @@ class PsiFactory:
         "heightSlightlyNarrowPenalty": HeightPenaltySlightlyNarrow,
 
         "heightTiltXAxisSlightlyNarrowPenalty": HeightTiltXAxisSlightlyNarrow,
-        "heightTiltXAxisSlightlyNarrowPenaltyJustHeight": HeightTiltXAxisSlightlyNarrowJustHeight
-
+        "heightTiltXAxisSlightlyNarrowPenaltyJustHeight": HeightTiltXAxisSlightlyNarrowJustHeight,
+        "heightTiltXAxisSlightlyNarrowPenaltyWeightedSixTwoTwo": HeightTiltXAxisSlightlyNarrowWeightedSixTwoTwo,
+        "heightTiltXAxisSlightlyNarrowPenaltyWeightedThreeThreeThree": HeightTiltXAxisSlightlyNarrowWeightedThreeThreeThree,
+        "heightTiltXAxisSlightlyNarrowPenaltyWeightedFiveThreeTwo": HeightTiltXAxisSlightlyNarrowWeightedFiveThreeTwo,
     }
 
     @staticmethod

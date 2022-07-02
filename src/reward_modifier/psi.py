@@ -12,7 +12,8 @@ def slightly_narrow_normal_dist_max_five(value: float, middle_of_dist: float):
     return 110 * normal_dist_density(value, middle_of_dist, 0.015) - 5.18
 
 
-class AbstractHumanoidHeightTiltXAxis(ABC, Psi):
+class AbstractHumanoidHeightTiltXAxis(Psi, ABC):
+
     def __call__(self, state: np.ndarray):
         return self._height_penalty(state) + self._forward_tilt_penalty(state) + self._x_axis_angle_rotation_penalty(
             state)

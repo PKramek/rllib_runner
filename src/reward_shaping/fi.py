@@ -145,6 +145,55 @@ class HeightPenaltyLessNarrowTwoHundred(HeightPenaltyLessNarrow):
         return super().__call__(state) * 200
 
 
+#####################
+class SquarePenalty(Fi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        optimal_point = Constants.HEIGHT_NOMINAL_VALUE
+
+        return - np.square((state[index] - optimal_point)) * 120
+
+
+class SquarePenaltyTen(SquarePenalty):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 10
+
+
+class SquarePenaltyTwenty(SquarePenalty):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 20
+
+
+class SquarePenaltyFifty(SquarePenalty):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 50
+
+
+class SquarePenaltySeventy(SquarePenalty):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 70
+
+
+class SquarePenaltyHundred(SquarePenalty):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 100
+
+
+class SquarePenaltyHundredFifty(SquarePenalty):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 150
+
+
+class SquarePenaltyTwoHundred(SquarePenalty):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 200
+
+
+class SquarePenaltyFourHundred(SquarePenalty):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 400
+
+
 class FiFactory:
     FI_MAPPING = {
         'normalSmallSHiftedExtremally': HumanoidHeightNormalLowPenaltyShiftedExtremely,
@@ -167,6 +216,18 @@ class FiFactory:
         "heightLessNarrowPenaltyHundred": HeightPenaltyLessNarrowHundred,
         "heightLessNarrowPenaltyHundredFifty": HeightPenaltyLessNarrowHundredFifty,
         "heightLessNarrowPenaltyTwoHundred": HeightPenaltyLessNarrowTwoHundred,
+
+        "heightSquarePenalty": SquarePenalty,
+        "heightSquarePenaltyTen": SquarePenaltyTen,
+        "heightSquarePenaltyTwenty": SquarePenaltyTwenty,
+        "heightSquarePenaltyFifty": SquarePenaltyFifty,
+        "heightSquarePenaltySeventy": SquarePenaltySeventy,
+
+        "heightSquarePenaltyHundred": SquarePenaltyHundred,
+        "heightSquarePenaltyHundredFifty": SquarePenaltyHundredFifty,
+        "heightSquarePenaltyTwoHundred": SquarePenaltyTwoHundred,
+        "heightSquarePenaltyFourHundred": SquarePenaltyFourHundred,
+
     }
 
     @staticmethod

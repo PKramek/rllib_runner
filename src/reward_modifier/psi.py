@@ -116,6 +116,14 @@ class HeightTiltXAxisSlightlyNarrowWeightedFiveThreeTwo(HeightTiltXAxisSlightlyN
         return super()._x_axis_angle_rotation_penalty(state) * 0.32
 
 
+class SquarePenalty(Psi):
+    def __call__(self, state: np.ndarray) -> float:
+        index = Constants.HEIGHT_INDEX
+        optimal_point = Constants.HEIGHT_NOMINAL_VALUE
+
+        return - np.square((state[index] - optimal_point)) * 120
+
+
 class PsiFactory:
     PSI_MAPPING = {
         'aliveBonus': AliveBonus,
@@ -127,6 +135,8 @@ class PsiFactory:
         "heightTiltXAxisSlightlyNarrowPenaltyWeightedSixTwoTwo": HeightTiltXAxisSlightlyNarrowWeightedSixTwoTwo,
         "heightTiltXAxisSlightlyNarrowPenaltyWeightedThreeThreeThree": HeightTiltXAxisSlightlyNarrowWeightedThreeThreeThree,
         "heightTiltXAxisSlightlyNarrowPenaltyWeightedFiveThreeTwo": HeightTiltXAxisSlightlyNarrowWeightedFiveThreeTwo,
+
+        "heightSquarePenalty": SquarePenalty
     }
 
     @staticmethod

@@ -145,6 +145,53 @@ class HeightPenaltyLessNarrowTwoHundred(HeightPenaltyLessNarrow):
         return super().__call__(state) * 200
 
 
+######################
+
+class HeightPenaltyLessNarrowFlipped(HeightPenaltyLessNarrow):
+    def __call__(self, state: np.ndarray) -> float:
+        return - super().__call__(state)
+
+
+class HeightPenaltyLessNarrowFiveFlipped(HeightPenaltyLessNarrowFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 5
+
+
+class HeightPenaltyLessNarrowTenFlipped(HeightPenaltyLessNarrowFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 10
+
+
+class HeightPenaltyLessNarrowTwentyFlipped(HeightPenaltyLessNarrowFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 20
+
+
+class HeightPenaltyLessNarrowFiftyFlipped(HeightPenaltyLessNarrowFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 50
+
+
+class HeightPenaltyLessNarrowSeventyFlipped(HeightPenaltyLessNarrowFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 70
+
+
+class HeightPenaltyLessNarrowHundredFlipped(HeightPenaltyLessNarrowFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 100
+
+
+class HeightPenaltyLessNarrowHundredFiftyFlipped(HeightPenaltyLessNarrowFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 150
+
+
+class HeightPenaltyLessNarrowTwoHundredFlipped(HeightPenaltyLessNarrowFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 200
+
+
 #####################
 class SquarePenalty(Fi):
     def __call__(self, state: np.ndarray) -> float:
@@ -193,6 +240,8 @@ class SquarePenaltyFourHundred(SquarePenalty):
     def __call__(self, state: np.ndarray) -> float:
         return super().__call__(state) * 400
 
+#############################################
+
 
 class FiFactory:
     FI_MAPPING = {
@@ -222,12 +271,19 @@ class FiFactory:
         "heightSquarePenaltyTwenty": SquarePenaltyTwenty,
         "heightSquarePenaltyFifty": SquarePenaltyFifty,
         "heightSquarePenaltySeventy": SquarePenaltySeventy,
-
         "heightSquarePenaltyHundred": SquarePenaltyHundred,
         "heightSquarePenaltyHundredFifty": SquarePenaltyHundredFifty,
         "heightSquarePenaltyTwoHundred": SquarePenaltyTwoHundred,
         "heightSquarePenaltyFourHundred": SquarePenaltyFourHundred,
 
+        "heightLessNarrowPenaltyFlipped": HeightPenaltyLessNarrowFlipped,
+        "heightLessNarrowPenaltyTenFlipped": HeightPenaltyLessNarrowTenFlipped,
+        "heightLessNarrowPenaltyTwentyFlipped": HeightPenaltyLessNarrowTwentyFlipped,
+        "heightLessNarrowPenaltyFiftyFlipped": HeightPenaltyLessNarrowFiftyFlipped,
+        "heightLessNarrowPenaltySeventyFlipped": HeightPenaltyLessNarrowSeventyFlipped,
+        "heightLessNarrowPenaltyHundredFlipped": HeightPenaltyLessNarrowHundredFlipped,
+        "heightLessNarrowPenaltyHundredFiftyFlipped": HeightPenaltyLessNarrowHundredFiftyFlipped,
+        "heightLessNarrowPenaltyTwoHundredFlipped": HeightPenaltyLessNarrowTwoHundredFlipped,
     }
 
     @staticmethod

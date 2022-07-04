@@ -240,6 +240,53 @@ class SquarePenaltyFourHundred(SquarePenalty):
     def __call__(self, state: np.ndarray) -> float:
         return super().__call__(state) * 400
 
+
+#########################3
+class SquarePenaltyFlipped(SquarePenalty):
+    def __call__(self, state: np.ndarray) -> float:
+        return - super().__call__(state)
+
+
+class SquarePenaltyTenFlipped(SquarePenaltyFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 10
+
+
+class SquarePenaltyTwentyFlipped(SquarePenaltyFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 20
+
+
+class SquarePenaltyFiftyFlipped(SquarePenaltyFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 50
+
+
+class SquarePenaltySeventyFlipped(SquarePenaltyFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 70
+
+
+class SquarePenaltyHundredFlipped(SquarePenaltyFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 100
+
+
+class SquarePenaltyHundredFiftyFlipped(SquarePenaltyFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 150
+
+
+class SquarePenaltyTwoHundredFlipped(SquarePenaltyFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 200
+
+
+class SquarePenaltyFourHundredFlipped(SquarePenaltyFlipped):
+    def __call__(self, state: np.ndarray) -> float:
+        return super().__call__(state) * 400
+
+
 #############################################
 
 
@@ -284,6 +331,16 @@ class FiFactory:
         "heightLessNarrowPenaltyHundredFlipped": HeightPenaltyLessNarrowHundredFlipped,
         "heightLessNarrowPenaltyHundredFiftyFlipped": HeightPenaltyLessNarrowHundredFiftyFlipped,
         "heightLessNarrowPenaltyTwoHundredFlipped": HeightPenaltyLessNarrowTwoHundredFlipped,
+
+        "heightSquarePenaltyFlipped": SquarePenaltyFlipped,
+        "heightSquarePenaltyTenFlipped": SquarePenaltyTenFlipped,
+        "heightSquarePenaltyTwentyFlipped": SquarePenaltyTwentyFlipped,
+        "heightSquarePenaltyFiftyFlipped": SquarePenaltyFiftyFlipped,
+        "heightSquarePenaltySeventyFlipped": SquarePenaltySeventyFlipped,
+        "heightSquarePenaltyHundredFlipped": SquarePenaltyHundredFlipped,
+        "heightSquarePenaltyHundredFiftyFlipped": SquarePenaltyHundredFiftyFlipped,
+        "heightSquarePenaltyTwoHundredFlipped": SquarePenaltyTwoHundredFlipped,
+        "heightSquarePenaltyFourHundredFlipped": SquarePenaltyFourHundredFlipped,
     }
 
     @staticmethod

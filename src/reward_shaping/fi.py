@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Type
 
 import numpy as np
+from scipy.stats import t
 
 from src.constants import Constants
 from src.reward_shaping.fi_base import Fi
@@ -287,7 +288,320 @@ class SquarePenaltyFourHundredFlipped(SquarePenaltyFlipped):
         return super().__call__(state) * 400
 
 
-#############################################
+######################################
+class TStudentHeightNormal(Fi):
+
+    def __call__(self, state: np.ndarray):
+        index = Constants.HEIGHT_INDEX
+        middle_of_dist = Constants.HEIGHT_NOMINAL_VALUE
+
+        degree_of_freedom = 0.5
+        scale = 0.05
+
+        return t.pdf(state[index], df=degree_of_freedom, scale=scale, loc=middle_of_dist)
+
+
+class TStudentHeightNormalTen(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 10
+
+
+class TStudentHeightNormalTwenty(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 20
+
+
+class TStudentHeightNormalFifty(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 50
+
+
+class TStudentHeightNormalSeventy(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 70
+
+
+class TStudentHeightNormalHundred(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 100
+
+
+class TStudentHeightNormalHundredFifty(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 150
+
+
+class TStudentHeightNormalTwoHundred(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 200
+
+
+##
+
+class TStudentHeightNormalFlipped(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return -super().__call__(state)
+
+
+class TStudentHeightNormalTenFlipped(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return -super().__call__(state) * 10
+
+
+class TStudentHeightNormalTwentyFlipped(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 20
+
+
+class TStudentHeightNormalFiftyFlipped(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 50
+
+
+class TStudentHeightNormalSeventyFlipped(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 70
+
+
+class TStudentHeightNormalHundredFlipped(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 100
+
+
+class TStudentHeightNormalHundredFiftyFlipped(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 150
+
+
+class TStudentHeightNormalTwoHundredFlipped(TStudentHeightNormal):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 200
+
+
+######################################
+class TStudentHeightWide(Fi):
+
+    def __call__(self, state: np.ndarray):
+        index = Constants.HEIGHT_INDEX
+        middle_of_dist = Constants.HEIGHT_NOMINAL_VALUE
+
+        degree_of_freedom = 5.0
+        scale = 0.07
+
+        return t.pdf(state[index], df=degree_of_freedom, scale=scale, loc=middle_of_dist)
+
+
+class TStudentHeightWideTen(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 10
+
+
+class TStudentHeightWideTwenty(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 20
+
+
+class TStudentHeightWideFifty(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 50
+
+
+class TStudentHeightWideSeventy(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 70
+
+
+class TStudentHeightWideHundred(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 100
+
+
+class TStudentHeightWideHundredFifty(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 150
+
+
+class TStudentHeightWideTwoHundred(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 200
+
+
+class TStudentHeightWideFlipped(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return -super().__call__(state)
+
+
+class TStudentHeightWideTenFlipped(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return -super().__call__(state) * 10
+
+
+class TStudentHeightWideTwentyFlipped(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 20
+
+
+class TStudentHeightWideFiftyFlipped(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 50
+
+
+class TStudentHeightWideSeventyFlipped(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 70
+
+
+class TStudentHeightWideHundredFlipped(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 100
+
+
+class TStudentHeightWideHundredFiftyFlipped(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 150
+
+
+class TStudentHeightWideTwoHundredFlipped(TStudentHeightWide):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 200
+
+
+#####################3
+
+
+class TStudentHeightNarrow(Fi):
+
+    def __call__(self, state: np.ndarray):
+        index = Constants.HEIGHT_INDEX
+        middle_of_dist = Constants.HEIGHT_NOMINAL_VALUE
+
+        degree_of_freedom = 0.1
+        scale = 0.03
+
+        return t.pdf(state[index], df=degree_of_freedom, scale=scale, loc=middle_of_dist)
+
+
+class TStudentHeightNarrowTen(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 10
+
+
+class TStudentHeightNarrowTwenty(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 20
+
+
+class TStudentHeightNarrowFifty(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 50
+
+
+class TStudentHeightNarrowSeventy(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 70
+
+
+class TStudentHeightNarrowHundred(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 100
+
+
+class TStudentHeightNarrowHundredFifty(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 150
+
+
+class TStudentHeightNarrowTwoHundred(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return super().__call__(state) * 200
+
+
+class TStudentHeightNarrowFlipped(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return -super().__call__(state)
+
+
+class TStudentHeightNarrowTenFlipped(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return -super().__call__(state) * 10
+
+
+class TStudentHeightNarrowTwentyFlipped(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 20
+
+
+class TStudentHeightNarrowFiftyFlipped(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 50
+
+
+class TStudentHeightNarrowSeventyFlipped(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 70
+
+
+class TStudentHeightNarrowHundredFlipped(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 100
+
+
+class TStudentHeightNarrowHundredFiftyFlipped(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 150
+
+
+class TStudentHeightNarrowTwoHundredFlipped(TStudentHeightNarrow):
+
+    def __call__(self, state: np.ndarray):
+        return - super().__call__(state) * 200
+
+
+#####################################
 
 
 class FiFactory:
@@ -295,52 +609,59 @@ class FiFactory:
         'normalSmallSHiftedExtremally': HumanoidHeightNormalLowPenaltyShiftedExtremely,
         "justFiveHundred": HumanoidJustFive,
 
-        "heightSlightlyNarrowPenalty": HeightPenaltySlightlyNarrow,
-        "heightSlightlyNarrowPenaltyTen": HeightPenaltySlightlyNarrowTen,
-        "heightSlightlyNarrowPenaltyTwenty": HeightPenaltySlightlyNarrowTwenty,
-        "heightSlightlyNarrowPenaltyFifty": HeightPenaltySlightlyNarrowFifty,
-        "heightSlightlyNarrowPenaltySeventy": HeightPenaltySlightlyNarrowSeventy,
-        "heightSlightlyNarrowPenaltyHundred": HeightPenaltySlightlyNarrowHundred,
-        "heightSlightlyNarrowPenaltyHundredFifty": HeightPenaltySlightlyNarrowHundredFifty,
-        "heightSlightlyNarrowPenaltyTwoHundred": HeightPenaltySlightlyNarrowHundredTwoHundred,
+        "tstudentHeightNormal": TStudentHeightNormal,
+        "tstudentHeightNormalTen": TStudentHeightNormalTen,
+        "tstudentHeightNormalTwenty": TStudentHeightNormalTwenty,
+        "tstudentHeightNormalFifty": TStudentHeightNormalFifty,
+        "tstudentHeightNormalSeventy": TStudentHeightNormalSeventy,
+        "tstudentHeightNormalHundred": TStudentHeightNormalHundred,
+        "tstudentHeightNormalHundredFifty": TStudentHeightNormalHundredFifty,
+        "tstudentHeightNormalTwoHundred": TStudentHeightNormalTwoHundred,
 
-        "heightLessNarrowPenalty": HeightPenaltyLessNarrow,
-        "heightLessNarrowPenaltyTen": HeightPenaltyLessNarrowTen,
-        "heightLessNarrowPenaltyTwenty": HeightPenaltyLessNarrowTwenty,
-        "heightLessNarrowPenaltyFifty": HeightPenaltyLessNarrowFifty,
-        "heightLessNarrowPenaltySeventy": HeightPenaltyLessNarrowSeventy,
-        "heightLessNarrowPenaltyHundred": HeightPenaltyLessNarrowHundred,
-        "heightLessNarrowPenaltyHundredFifty": HeightPenaltyLessNarrowHundredFifty,
-        "heightLessNarrowPenaltyTwoHundred": HeightPenaltyLessNarrowTwoHundred,
+        "tstudentHeightNormalFlipped": TStudentHeightNormalFlipped,
+        "tstudentHeightNormalTenFlipped": TStudentHeightNormalTenFlipped,
+        "tstudentHeightNormalTwentyFlipped": TStudentHeightNormalTwentyFlipped,
+        "tstudentHeightNormalFiftyFlipped": TStudentHeightNormalFiftyFlipped,
+        "tstudentHeightNormalSeventyFlipped": TStudentHeightNormalSeventyFlipped,
+        "tstudentHeightNormalHundredFlipped": TStudentHeightNormalHundredFlipped,
+        "tstudentHeightNormalHundredFiftyFlipped": TStudentHeightNormalHundredFiftyFlipped,
+        "tstudentHeightNormalTwoHundredFlipped": TStudentHeightNormalTwoHundredFlipped,
 
-        "heightSquarePenalty": SquarePenalty,
-        "heightSquarePenaltyTen": SquarePenaltyTen,
-        "heightSquarePenaltyTwenty": SquarePenaltyTwenty,
-        "heightSquarePenaltyFifty": SquarePenaltyFifty,
-        "heightSquarePenaltySeventy": SquarePenaltySeventy,
-        "heightSquarePenaltyHundred": SquarePenaltyHundred,
-        "heightSquarePenaltyHundredFifty": SquarePenaltyHundredFifty,
-        "heightSquarePenaltyTwoHundred": SquarePenaltyTwoHundred,
-        "heightSquarePenaltyFourHundred": SquarePenaltyFourHundred,
+        "tstudentHeightWide": TStudentHeightWide,
+        "tstudentHeightWideTen": TStudentHeightWideTen,
+        "tstudentHeightWideTwenty": TStudentHeightWideTwenty,
+        "tstudentHeightWideFifty": TStudentHeightWideFifty,
+        "tstudentHeightWideSeventy": TStudentHeightWideSeventy,
+        "tstudentHeightWideHundred": TStudentHeightWideHundred,
+        "tstudentHeightWideHundredFifty": TStudentHeightWideHundredFifty,
+        "tstudentHeightWideTwoHundred": TStudentHeightWideTwoHundred,
 
-        "heightLessNarrowPenaltyFlipped": HeightPenaltyLessNarrowFlipped,
-        "heightLessNarrowPenaltyTenFlipped": HeightPenaltyLessNarrowTenFlipped,
-        "heightLessNarrowPenaltyTwentyFlipped": HeightPenaltyLessNarrowTwentyFlipped,
-        "heightLessNarrowPenaltyFiftyFlipped": HeightPenaltyLessNarrowFiftyFlipped,
-        "heightLessNarrowPenaltySeventyFlipped": HeightPenaltyLessNarrowSeventyFlipped,
-        "heightLessNarrowPenaltyHundredFlipped": HeightPenaltyLessNarrowHundredFlipped,
-        "heightLessNarrowPenaltyHundredFiftyFlipped": HeightPenaltyLessNarrowHundredFiftyFlipped,
-        "heightLessNarrowPenaltyTwoHundredFlipped": HeightPenaltyLessNarrowTwoHundredFlipped,
+        "tstudentHeightWideFlipped": TStudentHeightWideFlipped,
+        "tstudentHeightWideTenFlipped": TStudentHeightWideTenFlipped,
+        "tstudentHeightWideTwentyFlipped": TStudentHeightWideTwentyFlipped,
+        "tstudentHeightWideFiftyFlipped": TStudentHeightWideFiftyFlipped,
+        "tstudentHeightWideSeventyFlipped": TStudentHeightWideSeventyFlipped,
+        "tstudentHeightWideHundredFlipped": TStudentHeightWideHundredFlipped,
+        "tstudentHeightWideHundredFiftyFlipped": TStudentHeightWideHundredFiftyFlipped,
+        "tstudentHeightWideTwoHundredFlipped": TStudentHeightWideTwoHundredFlipped,
 
-        "heightSquarePenaltyFlipped": SquarePenaltyFlipped,
-        "heightSquarePenaltyTenFlipped": SquarePenaltyTenFlipped,
-        "heightSquarePenaltyTwentyFlipped": SquarePenaltyTwentyFlipped,
-        "heightSquarePenaltyFiftyFlipped": SquarePenaltyFiftyFlipped,
-        "heightSquarePenaltySeventyFlipped": SquarePenaltySeventyFlipped,
-        "heightSquarePenaltyHundredFlipped": SquarePenaltyHundredFlipped,
-        "heightSquarePenaltyHundredFiftyFlipped": SquarePenaltyHundredFiftyFlipped,
-        "heightSquarePenaltyTwoHundredFlipped": SquarePenaltyTwoHundredFlipped,
-        "heightSquarePenaltyFourHundredFlipped": SquarePenaltyFourHundredFlipped,
+        "tstudentHeightNarrow": TStudentHeightNarrow,
+        "tstudentHeightNarrowTen": TStudentHeightNarrowTen,
+        "tstudentHeightNarrowTwenty": TStudentHeightNarrowTwenty,
+        "tstudentHeightNarrowFifty": TStudentHeightNarrowFifty,
+        "tstudentHeightNarrowSeventy": TStudentHeightNarrowSeventy,
+        "tstudentHeightNarrowHundred": TStudentHeightNarrowHundred,
+        "tstudentHeightNarrowHundredFifty": TStudentHeightNarrowHundredFifty,
+        "tstudentHeightNarrowTwoHundred": TStudentHeightNarrowTwoHundred,
+
+        "tstudentHeightNarrowFlipped": TStudentHeightNarrowFlipped,
+        "tstudentHeightNarrowTenFlipped": TStudentHeightNarrowTenFlipped,
+        "tstudentHeightNarrowTwentyFlipped": TStudentHeightNarrowTwentyFlipped,
+        "tstudentHeightNarrowFiftyFlipped": TStudentHeightNarrowFiftyFlipped,
+        "tstudentHeightNarrowSeventyFlipped": TStudentHeightNarrowSeventyFlipped,
+        "tstudentHeightNarrowHundredFlipped": TStudentHeightNarrowHundredFlipped,
+        "tstudentHeightNarrowHundredFiftyFlipped": TStudentHeightNarrowHundredFiftyFlipped,
+        "tstudentHeightNarrowTwoHundredFlipped": TStudentHeightNarrowTwoHundredFlipped,
     }
 
     @staticmethod
